@@ -1,0 +1,11 @@
+pre-commit:
+  parallel: true
+  commands:
+    comments:
+      glob: "scripts/*.{ts,mjs}"
+      run: node scripts/check-comments.mjs {staged_files}
+
+commit-msg:
+  commands:
+    trailers:
+      run: node scripts/check-commit-msg.mjs {1}
