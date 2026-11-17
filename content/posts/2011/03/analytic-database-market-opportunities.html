@@ -1,0 +1,53 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-1010664852184294737",
+  "title": "Analytic Database Market Opportunities",
+  "published": "2011-03-29T09:00:00.000-07:00",
+  "updated": "2011-03-29T12:49:02.296-07:00",
+  "labels": [
+    "adbms",
+    "analytic",
+    "gpu",
+    "hadapt",
+    "hadoop",
+    "parstream",
+    "rainstor",
+    "segmentation"
+  ],
+  "comments": []
+}
+---
+<i>In my first post in this series I gave <a href="/2010/12/initial-thoughts-about-parstream.html">an overview of ParStream and their product</a>.&nbsp;</i><i>In the second post I gave <a href="/2011/01/analytic-database-market-fly-over.html">an overview of the Analytic Database Market</a> from my perspective.&nbsp;</i><i>In the third post I introduced <a href="/2011/03/analytic-database-market-segmentation.html">a simple Analytic Database Market Segmentation.</a></i><br />
+<br />
+In this post I will look at the gaps in this market and the new opportunities for ParStream and RainStor to introduce differentiated offerings. First, though I'll address the positioning of Hadapt.<br />
+<br />
+<div class="separator" style="clear: both; text-align: center;"><a href="/images/adbms-opportunities2-s1600.jpg" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" height="380" src="/images/adbms-opportunities2-s640.jpg" width="640" /></a></div><br />
+<b>Hadapt Positioning</b><br />
+Hadapt have recently come out of stealth and will be offering a very fast 'adaptive' version of Hadoop. Hadapt is a reworked and commercialized version of the Daniel Abadi's HadoopDB project. You can read <a href="http://www.dbms2.com/2011/03/23/hadapt-commercialized-hadoopdb/">Curt Monash's overview for more on that</a>. &nbsp;Basically Hadapt provides a Hadoop compatible interface (buzz phrase alert) and uses standard SQL databases (currently Postgres or VectorWise) underneath instead of HDFS. The unique part of their offering is keeping track of node performance and adapting queries to make the best use of each node. The devil is in the details of course, but a number of questions remain unanswered: How much &nbsp;of the Hadoop API will be mapped to the database? Will there be a big inflection in performance between logic that maps to the DB and logic that runs in Hadoop? Etc. At a high level Hadapt seems like a very smart play for cloud based Hadoop users. Amazon EC2 instances have notoriously inconsistent I/O performance and a product that works around that should find fertile ground.<br />
+<br />
+<b>RainStor's Current Positioning</b><br />
+RainStor, if you don't know, is a special archival database that features massive compression. They current sell it as an OLDR solution (Online Data Retrieval) primarily aimed at company's that have large data volumes and stringent data retention requirements, e.g., anyone in Financial Services. They promise between 95% (20:1) &nbsp;and 98% (40:1) compression rates for data whilst remaining fully query-able. Again <a href="http://www.dbms2.com/category/products-and-vendors/clearpace/">Curt Monash has the best summary of their offering</a>. I briefly met some RainStor guys a while back and I feel pretty confident that the product delivers what it promises. That said, I have never come across a RainStor client and I talk to lots of Teradata and Netezza types who would be their natural customers. So, though I have no direct knowledge of how they are doing, I suspect that it's been slow going to date and focusing on a different part of the market might be more productive.<br />
+<br />
+<b>Hyper Compressed Hadoop - RainStor Opportunity</b><br />
+I tweeted a while back that "RainStor needs a MapReduce story like yesterday". I still think that's right although now I think they need a <b>Hadoop compatible</b> story. To me, RainStor and Hadoop/MapReduce seem like a great fit. Hadoop users value the ability to process large data volumes over simple speed. Sure, they're happy with speed when they can get it but Hadoop is about processing as much data as possible. RainStor massively compresses databases while keeping them online and fully query-able. If RainStor could bring that compression to Hadoop it would be incredibly valuable. Imagine a Hadoop cluster that's maxed out at 200TB of raw data, compressed using splittable LZO to 50TB and replicated on 200TB of disk. If RainStor (replacing HDFS) could compress that same data at 20:1, half their headline rate, that cluster can now scale out to roughly 2,000TB. And many operations in Hadoop are constrained by disk I/O so if RainStor can operate to some extent on compressed data the cluster might just run faster. Even if it runs slightly slower the potential cost savings are huge (<i>insert your own Amazon EC2 calculation here where you take EC2+S3 spend and divide by 20</i>).<br />
+<br />
+<b>ParStream Opportunities</b><br />
+I see 2 key opportunities for ParStream in the current market. They can co-exist; but may require significant re-engineering of the product. First a bit of background; I'm looking for <a href="http://en.wikipedia.org/wiki/Blue_Ocean_Strategy">'Blue Ocean Strategies'</a> where ParStream can create a temporary monopoly. Selling into the 'MPP Upstart' segment is not considered due to the large number of current competitors. It's interesting to note though that that is where ParStream's current marketing is targeted.<br />
+<br />
+<b>Real-Time Analytic Hadoop - ParStream Opportunity </b>1<br />
+ParStream's first opportunity is to repurpose their technology into a Hadoop compatible offering. Specifically a 'real-time analytic Hadoop' product that uses GPU acceleration to vastly speed up Hadoop processing and opens up the MapReduce concept for many different and untapped use cases. &nbsp;ParStream claim to have a unique index format and to mix workloads across CPUs and GPUs to minimise response times. It should be possible to use this technology to replace HDFS with their own data layer and indexing. They should also aim to greatly simplify data loading and cluster administration work. Finally transparent SQL access would be a very handy feature for business that want to provide BI directly from their 'analytic Hadoop' infrastructure. In summary: Hadoop's coding flexibility, processing speeds that approach CEP, and Data Warehouse style SQL access for downstream apps.<br />
+<br />
+Target customers: Algorithmic trading companies (as always…), Large-scale online ad networks, M2M communications, IP-based Telcos, etc . Generally businesses with<i> large volumes of data and high inbound data rates who need to make semi-complex decisions quickly and who have a relatively small staff</i>.<br />
+<br />
+<b>Single User Data Warehouses - ParStream Opportunity </b>2<br />
+ParStream's second opportunity is to market ParStream as a single user, desk side data warehouse for analytic professionals, specifically targeting GPU powered workstations (<a href="http://www.thinkmate.com/System/SuperServer_7046GT-TRF-TC4">like this one: ~$12k =&gt; 4 GPUs [960 cores], 2 Quad core CPUs, 48GB RAM, 3.6TB of fast disk</a>). This version of ParStream must run on Windows (preferably Win7 x64, but Win Server at a minimum). Many &nbsp;IT departments will balk at having a non-Windows workstation out in the office running on the standard LAN. However they are very used to analysts requesting 'special' powerful hardware. That's why the desk side element is so critical, this strategy is designed to penetrate restrictive centralised IT regimes.<br />
+<br />
+In my experience a handful of users place 90% of the complex query demand on any given data warehouse. They're typically statisticians and operational researchers doing hard boiled analysis and what-if modelling. Many very large businesses have separate SAS environments that this group alone uses but that's a huge investment that many can't afford. Sophisticated analysts are a scarce and expensive resource and many companies can't fill the vacancies they have. A system that improves analyst productivity and ensures their time is well used will justify a significant premium. It also gives the business an excellent retention tool &nbsp;to retain their most valuable 'quants'.<br />
+<br />
+This opportunity avoids the challenges of selling a large scale GPU system into a business that has never purchased one before <b>and</b> avoids the red ocean approach of selling directly into the competitive MPP upstart segment. However it will be difficult to talk directly to these users inside the larger corporation and, when you convince them they need ParStream; you still have to work up the chain of command to get purchase authority (not the normal direction). On the plus side though these users form a fairly tight community and they will market it themselves if it makes their jobs easier.<br />
+<br />
+Target customers: Biotech/Bioscience start-up companies, University researchers, marketing departments or consultancies. Generally, if a business is running their data warehouse on Oracle or SQL Server, their will be an analytic professional who would give <b>anything</b> to have a very fast database all to themselves.<br />
+<br />
+<i>In my next post I will look at why Hadoop is getting so much press, whether the hype is warranted and, generally, the future shape of the thing we currently call the data warehouse.</i><br />
+<div><br />
+</div>

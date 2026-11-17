@@ -1,0 +1,57 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-6517158608775625125",
+  "title": "Thoughts on 37signals requirements for a \"Business Analyst\"",
+  "published": "2010-11-02T09:42:00.000-07:00",
+  "updated": "2010-11-04T06:43:19.869-07:00",
+  "labels": [
+    "37signals",
+    "analyst",
+    "bi",
+    "statistician"
+  ],
+  "comments": [
+    {
+      "id": "6175087347847847680",
+      "author": "Timbo",
+      "authorUrl": "https://www.blogger.com/profile/07929933758766018016",
+      "published": "2010-11-02T18:56:40.527-07:00",
+      "html": "Great insight."
+    }
+  ]
+}
+---
+Jason Fried posted a job requirement on Friday evening for a new "Business Analyst" role at 37signals, although in reality the role is more of a Business Intelligence Analyst than a typical BA as I have experienced it. The role presents something of a conundrum for me and I thought it would be interesting to pick it apart in writing for your enjoyment.<br />
+<br />
+<br />
+UPDATE: I'm made a follow-up comment on the 37s blog that pretty is a good summary for this post - "<i>I was reflecting on the requirement from years of experience doing this kind of thing (sifting meaning from piles of data). I actually said that they’ve described 2 roles not often combined in a single person.<br />
+<br />
+So let me give an actual suggestion: > First, do the basics, make sure the data is organised and reliable. > Second, establish your metrics, build a performance baseline. > Third, outsource the hard analytics on a “pay for performance” basis. > Finally, if that works, then think about bringing analytic talent in-house.<br />
+<br />
+It’s hard to describe the indignity of hiring a genius and then forcing them to spend 95% of their time just pushing the data around.</i>"<br />
+<br />
+I call myself a Business Intelligence professional and my last title was "Solution Architect". You can review my claim to that title on my <a href="http://linkedin.com/in/joeharris76">Linked In profile</a>. &nbsp;This <b>should</b>&nbsp;be a great opportunity for me. I'm a fan of 37signals products; I love the Rework book and I pretty much agree with all of it; and I really like their take on business practices like global teams and firing the workaholics.<br />
+<br />
+However, it doesn't seem like this role is for me. Why not? It seems like they've left out the step where I do my best work: gather, integrate, prepare and verify the data. In the Business Intelligence industry we usually call the results of this phase the "data warehouse". A data warehouse, in practice, can't actually be defined in more detail than that. It's simply the place where we make the prepared data available for use. Nevertheless, the way that you choose to prepare the data inherently defines the outcomes that you get. It's the garbage in, garbage out axiom.<br />
+<br />
+Jason tells us a little bit about where their data comes from:<i> "[their] own databases, raw usage logs, Google Analytics, and occasional qualitative surveys."</i> We're looking at very raw data sources here. Making good use of these data sources will take a lot of preparation (GA excepted) and will require a serious investment of time (and therefore money). The key is to create structures and processes that are automated and repeatable. This may seem obvious to you, but there's a sizeable number of white collar workers whose sole job is wrangling data between spreadsheets [ e.g. accountants ;) ].<br />
+<br />
+The content and structure of the data is largely defined by the questions that you want to answer. Jason has at least given us an indication of their questions: &nbsp;"<i>How many&nbsp;customers that joined 6 months ago are still active?"; "What’s the average lifetime value of a Basecamp customer?"; "Which upgrade paths generate the most revenue?"</i>. Thats a good start. I can easily imagine where I'd get that data from and how I'd organise it. This is 'meat &amp; potatoes' BI and it's where 80% of the business value is found. These are the things you put on your "dashboard" and track closely over time.<br />
+<br />
+Another question is trickier: <i>"In the long term would it be worth picking up 20% more free customers at the expense of 5% pay customers?</i>" There's a lot of implied data packed into that question: what's the long term?; what does 'worth' mean?; can you easily change that mix?; are those variables even related?; etc. This is more of a classical business analysis situation where we'd build a model of the business (usually in a spreadsheet) and then flex the various parameters to see what happens. If you want to get fancy you then run a Monte Carlo simulation where you (effectively) jitter &nbsp;the variables at random to see the 'shape' of all possible outcomes. This type of analysis requires a lot experience with the business. It's also high risk because you have to decide on the allowed range of many variables and guessing wrong invalidates the model. It <b>can</b> reveal very interesting structural limits to growth and revenue if &nbsp;done correctly. Often the credibility of these models is defined by the credibility of the person who produced it, for better or worse. Would that be the same in 37signals?<br />
+<br />
+Now we move on to slippery territory: <i>"What are the key drivers that encourage people to upgrade?"; "What usage patterns lead to long-term customers?". </i>We're basically moving into operational research here. We want to split customers into various cohorts and analyse the differences in behaviour. The primary success factor in this kind of analysis is experimental design and this is a specialist skill. Think briefly about the factors involved and they make the business model seem tame. How do we define usage patterns? Will we discover them via very clever statistics or just create them _a priori_? What are the implications of both approaches? The people who can do this correctly from a base of zero are pretty rare, in my experience. However, this is an area where you can outsource the work <b>very</b> effectively if you have already put the effort in to capture and organise the underlying information.<br />
+<br />
+And the coup de grace: <i>"Which customers are likely to cancel their account in the next 7 days?"</i>. It sounds reasonable on it's face. However, consider your own actions: Do you subscribe to any services you no longer need or use? The odds are good that you do. Why haven't you cancelled them? Have you said to yourself: "I really need to cancel that when I get a second."? And yet didn't do it. When you finally did cancel it, was it because you started paying for a substitute service? Or were you reminded of it at just the right time when you could take action? Predicting the behaviour of single human is a fools game. The best you can do is group similar people together and treat them as a whole ("we expect to lose 10% of this group"). Anyone who tells you they can do better than that is probably pulling your leg, in my humble opinion.<br />
+<br />
+Finally, let's have a look at their questions for the applicants cover letter:<br />
+<i>1. Explain the process of determining the value of a visitor to the basecamphq.com home page.</i><br />
+&gt;&gt; Very open ended. How do we define value in this context? The cost per visit / cost per click? The cost per conversion (visitors needed to deliver a certain number of new paid/free signups)? Or perhaps the acquisition cost (usually marketing expenses as a % of year one revenue)? I'd say we need to track all of those metrics but this is pretty much baseline stuff.<br />
+<i>2. How would you figure out which industry to target for a Highrise marketing campaign?</i><br />
+&gt;&gt; This isn't particularly analytical, I'm pretty sure the standard dogma is sell to the people who already love your stuff. It would be interesting to know how much demographic data 37signals has about their customers industry. This is an area where you typically need to spend money to get good data.<br />
+<i>3. How would you segment our customer base and what can we do with that information?</i><br />
+&gt;&gt; This is a classical analytic piece of work. I've seen some amazing stuff done with segmentation (self organising maps spring to mind). However, in my experience models based on simple demographics (for individuals) or industry &amp; company size (for businesses) perform nearly as well and are much easier to update and maintain.<br />
+<br />
+As far as I can tell they want to hire a split personality. Someone who'll A) create a reliable infrastructure for common analysis requirements, B) build high quality models of business processes and C) do deep diving 'hard stats' analytics that can throw up unexpected insights. Good luck to them. Such people do exist, simple probability essentially dictates that that is the case. And 37signals seems to have a magnetic attraction for talent so I wouldn't bet against it. On the other hand one of their koans is not hiring rockstars. This sounds like a rockstar to me.<br />
+<br />
+Full disclosure: I'm currently working on a web service (soon to be at <a href="http://appconductor.com/">appconductor.com</a>) that synchronises &nbsp;various web apps and also backs them up. It's going to launch with support for Basecamp, Highrise and Freshbooks (i.e. 2/3rds 37signals products). Make of that what you will.

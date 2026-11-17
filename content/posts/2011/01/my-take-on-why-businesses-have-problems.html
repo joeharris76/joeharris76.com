@@ -1,0 +1,45 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-1306441477668629561",
+  "title": "My take on why businesses have problems with ETL tools",
+  "published": "2011-01-19T07:52:00.000-08:00",
+  "updated": "2011-01-19T07:52:17.609-08:00",
+  "labels": [
+    "columnar",
+    "database",
+    "enterprise",
+    "etl",
+    "open-source",
+    "sql"
+  ],
+  "comments": [
+    {
+      "id": "8447541758726660745",
+      "author": "Anonymous",
+      "authorUrl": "https://www.blogger.com/profile/08728041245027895529",
+      "published": "2011-01-21T08:14:29.038-08:00",
+      "html": "There is a model (The Common Warehouse Metamodel, CWM) for metadata exchange between ETL tools. You&#39;re right, none of the <a href=\"http://www.etltool.com/open-source-etl-tools.htm\" rel=\"nofollow\">open source ETL tools</a> commit to it, but some of the closed source ETL tools do like Informatica and SAS. Sure, it would be nice if there is a SQL equivalent of ETL, but to use the absence of it to promote hard coding SQL will be not the way to go I hope. Several features of ETL tools are so powerful, in serious data integration projects it will give a proper return on investment."
+    },
+    {
+      "id": "6777033246447378836",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2011-01-28T11:52:42.540-08:00",
+      "html": "Norman,<br /><br />Thanks for your comment. I&#39;m aware of the CWM but it&#39;s one of those things that I&#39;ve *never* seen used in real life and if you look at the implementations they all seem a bit &#39;dusty&#39; with no updates in years.<br /><br />In calling for a SQL for ETL what I&#39;d like to see is something very light weight that leaves the actual execution details up to the implementation. A human readable form of the XML in Kettle (PDI) kjb and ktr files would be a great start.<br /><br />One final note: I&#39;m not necessarily promoting &quot;hard coded SQL&quot; although I don&#39;t actually think that&#39;s the end of the world. You can get a better feel for my take on this in a previous post: <a href=\"http://joeharris76.blogspot.com/2010/10/can-has-dataz-orm-as-disruptive.html\" rel=\"nofollow\"> &quot;Disrespecting the database? ORMs as disruptive technology&quot;</a>"
+    }
+  ]
+}
+---
+Check out this very nice piece by Rick about the reasons <a href="http://datadoghouse.typepad.com/data_doghouse/2011/01/my-take-on-why-etl-has-not-always-kept-up-with-the-integration-workload.html">why companies have failed to get the most out of their ETL tools</a>.<br />
+<br />
+My take is from the other side of the fence. As a business user I'm often frustated by ETL tools and have been known to campaign against them for the following reasons:<br />
+<br />
+&gt; ETL tools have been too focussed on Extract-Transform-Load and too little focused on actual data integration. I have complex integration challenges that are not necessarily a good fit for the ETL strategy and sometimes I feel like I'm pushing a square peg into a round hole.<br />
+<br />
+&gt; It's still very challenging to generate reusable logic inside ETL tools and this really should be the easiest thing in the world (ever heard the mantra Don't Repeat Yourself!). Often the hoops that have to be jumped through are more trouble than they are worth.<br />
+<br />
+&gt; Some ETL tools are a hodge podge of technologies and approaches with different data types and different syntaxes wherever you look. (SSIS I'm looking at you! This still is not being addressed in Denali.)<br />
+<br />
+&gt; ETL tools are too focused on their own execution engines and fail miserably to take advantage of the processing power of columnar and MPP databases by running processes on the database. This is understandable in open source tools (database specific SQL may be a bridge too far) but in commercial tools it's pathetic.<br />
+<br />
+&gt; Finally, where is the ETL equivalent of SQL? Why are we stuck with incompatible formats for each tool. The design graphs in each tool look very similar and the data they capture is near identical. Even the open source projects have failed to utilise a common format. <b>Very poor show</b>. <i>This is the single biggest obstacle to more widespread ETL.</i> Right now it's much easier for other parts of the stack to stick with SQL and pretend that ETL doesn't exist.

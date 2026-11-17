@@ -1,0 +1,84 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-5256213704823320091",
+  "title": "Why GPUs matter for DW/BI",
+  "published": "2009-07-29T12:17:00.001-07:00",
+  "updated": "2017-11-14T06:25:06.692-08:00",
+  "labels": [],
+  "comments": []
+}
+---
+<div>
+I tweeted a few days ago that I wasn't particularly excited about either the Groovy Corp or XtremeData announcements because I think any gains they achieve by using FPGAs will be swept away by GPGPU and related developments. I got a few replies either asking what GPGPU is and a few dismissing it as irrelevant (vis a vis Intel x64 progress). So I want to explain my thoughts on GPGPU, and how it may affect the Database / Business Intelligence / Analytics industry (industries?).</div>
+<div>
+<br />
+GPGPU stands for "general-purpose computing on graphics processing units". ([dead link]) GPGPU is also referred to as "stream processing" or "stream computing" in some contexts. The idea is that you can offload the processing normally done by the CPU to the computer's graphics card(s).</div>
+<div>
+<br />
+But why would you want to? Well, GPUs are on a roll. Their performance is increasing exponentially faster than the increase in CPU performance. I don't want to overload this post with background info but suffice to say that GPUs are *incredibly* powerful now and getting more powerful much faster than CPUs. If you doubt that this is the case have a look at this article on the Top500 supercomputing site, point 4 specifically. ([dead link])</div>
+<div>
+<br />
+This is not a novel insight on my part. I've been reading about this trend since at least 2004. There was a memorable post on Coding Horror in 2006 ([dead link]). Nvidia released their C compatibility layer "CUDA" in 2006 ([dead link]) and ATI (now AMD) released their alternative "Stream SDK" in 2007 ([dead link]). More recently the OpenCL project has been established to allow programmers to tap the power of *any* GPU (Nvidia, AMD, etc) from within high level languages. This is being driven by Apple and their next OSX update will delegate many tasks to the GPU using OpenCL.</div>
+<div>
+<br />
+That's the <i>what</i>. </div>
+<div>
+<br /></div>
+<div>
+Some people feel that GPGPU will fail to take hold because Intel will eventually catch up. This is a reasonable point of view and in fact Intel has a project called Larrabee ([dead link]). They are attempting to make a hybrid chip that effectively emulates a GPU within the main processor. It's worth noting that this is very similar to the approach IBM have taken with the Cell chip used in the Playstation3 and many new supercomputers. Intel will be introducing a new set of extensions (like SSE2) that will have to be used to tap into the full functionality. The prototypes that have been demo'ed are significantly slower than current pure GPUs. The point is that Intel are aware of GPGPU and are embracing it. The issue for Intel is that the exponential growth of GPU power looks like it's going to put them on the wrong side of a technology growth curve for once.</div>
+<br />
+<div>
+<br />
+<b>Why are GPUs important to databases and analytics?</b></div>
+<div>
+<ol>
+<li><b>The multi-core future is here now.</b><br />    </li>
+<div>
+I'm sure you've heard the expression "the future is already here it's just unevenly distributed". Well that applies double to GPGPU. We can all see that multi-core chips are where computing is going. The clock speed race ended in 2004. Current high end CPUs now have 4 cores and 8 cores will arrive next year and on it goes. GPUs have been pushing this trend for longer and are much further out on this curve. High end GPUs now contain up to 128 cores and the core count is doubling faster than CPUs.</div>
+<br />
+<li><b>Core scale out is hard.</b><br />    </li>
+<div>
+Utilizing more cores is not straightforward. Current software does not utilize even 2 cores effectively. If you have a huge spreadsheet calculating on your dual core machine you'll notice that it only uses one core. So half the available power of your PC is just sitting there while you're twiddling your thumbs.</div>
+<br />    <div>
+Database software has a certain amount of parallelism built in already, particularly the big 3 "enterprise" databases. But the parallel strategies they employ where designed for single core chips residing in their own sockets and having their own private supply of RAM. Can they use the cores we have right now? Yes, but the future now looks very different. Hundreds of cores on a single piece of silicon.</div>
+<br />    <div>
+Daniel Abadi's recent post about hadoopDB predicts a "scalability crisis for the parallel database system". His point is that current MPP databases don't scale well past 100 nodes ([dead link]). I'm predicting a similar crisis in scalability for *all database systems* at the CPU level. Strategies for dividing tasks up among 16 or 32 or even 64 processors with their own RAM will grind to a halt when used across 256 (and more) cores on a single chip with a single path to RAM.</div>
+<br />
+<li><b>Main memory I/O is the new disk I/O.</b><br />    </li>
+<div>
+Disk access has long been our achilles heel in the database industry. The rule of thumb for improving performance is to minimize the amount of disk I/O that you perform. This weakness has become ever more problematic as disk speeds have increased very, very slowly compared to CPU speed. Curt Monash had a great post about this a while ago ([dead link])</div>
+<div>
+<br /></div>
+<div>
+In our new multi-core world we will have a new problem. Every core we add increases the demand for data going into and out of RAM. Intel have doubled the width of this "pipe" in recent chips but practical considerations will constrain increases in this area in a similar manner to the constraints on disk speed seen in the past.</div>
+<br />
+<li><b>Databases will have to change.</b><br />    </li>
+<div>
+Future databases will have to be heavily rewritten and probably re-architected to take advantage of multi-core processor improvements. Products that seek to fully utilize many cores will have to be just as parsimonious with RAM access as current generation columnar and "in-memory" databases are with disk. Further they will have to become just savvy about parallelizing the actions as current MPP databases but they will have to co-ordinate this parallelism at 2 levels instead of just 1.</div>
+<div>
+<br /></div>
+<ul>
+<li><b>1st:</b> Activity and data must be split and recombined across Servers/Instances (as currently)<br />     </li>
+<br />
+<li><b>2nd: </b>Activity and data must be split and recombined across Cores, which will probably have dedicated RAM "pools".<br />     </li>
+<br />     </ul>
+<li><b>1st movers will gain all the momentum.</b><br />    </li>
+<div>
+So, finally, this is my basic point. There's a new world coming. It has a lot of cores. It will require new approaches. That world is accessible today through GPUs. Database vendors who move in this direction now will gain market share and momentum. Those who think they can wait on the Intel and "traditional" CPUs to "catch up" may live to regret it.</div>
+</ol>
+</div>
+<div>
+<br />
+<b>   A few parting thoughts…</b></div>
+<div>
+<br />
+I said at the start that I feel FPGAs will be swept away. I should make 2 caveats to that. First, I can well imagine a world where FPGAs come to the fore as a means to co-ordinate very large numbers of small simple cores. But I think we're still quite a long way from that time. Second, Netezza use FPGAs in a very specific way between the disk and CPU/RAM. This seems like a grey area to me, however Vertica are able to achieve very good performance without resorting to such tricks.</div>
+<div>
+<br />
+Kickfire is a very interesting case as regards GPGPU. They are using a "GPU-like" chip as their workhorse. Justin Swanhart was very insistent that their chip is not a GPU (that is an analogy) and that it is truly a unique chip. For their sake I hope this is marketing spin and the chip is actually 99% standard GPU with small modifications. Otherwise, I can't imagine how a start-up can engage in the core count arms race long term, especially when it sells to the mid-market. Perhaps they have plans to move to a commodity GPU platform.</div>
+<div>
+<br />
+A very interesting paper was published recently about performing database operations on a GPU. You can find it here ([dead link]). I'd love to know what you think of the ideas presented.</div>
+<div>
+<br />
+Finally, I want to point out that I'm not a database researcher nor an industry analyst. My opinion is merely that of a casual observer, albeit an observer with a vested interest. I hope you will do me the kindness of pointing out the flaws in my arguments in the comments.</div>

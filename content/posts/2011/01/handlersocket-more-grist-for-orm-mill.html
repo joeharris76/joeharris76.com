@@ -1,0 +1,27 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-4429521623532110031",
+  "title": "HandlerSocket - More grist for the ORM mill",
+  "published": "2011-01-28T08:23:00.000-08:00",
+  "updated": "2011-01-28T08:23:54.126-08:00",
+  "labels": [
+    "database",
+    "HandlerSocket",
+    "MySQL",
+    "no-sql",
+    "orm"
+  ],
+  "comments": []
+}
+---
+A plugin called HandlerSocket was released last year that allows InnoDB to be used to directly, bypassing the MySQL parsing and optimising steps. The genius of HandlerSocket is that the data is still "in" MySQL so you can use the entire MySQL toolchain (monitoring, replication, etc.). You also have your data stored in a highly reliable database, as opposed to some of the horror stories I'm seeing about newer NoSQL products.<br />
+<br />
+In the original blog post &nbsp;( <a href="http://yoshinorimatsunobu.blogspot.com/2010/10/using-mysql-as-nosql-story-for.html">here</a> ) it talks about 720,000 qps on an 8 core Xeon with 32GB RAM. Granted this is all in memory data we're talking about but that is a hell of a figure. He also claims it outperforms Memcached.<br />
+<br />
+Next, Percona added HandlerSocket to their InnoDB fork back in December ( <a href="http://www.mysqlperformanceblog.com/2010/12/14/percona-server-now-both-sql-and-nosql/">here</a> ) so if you're looking for someone to talk to they may be the best people.<br />
+<br />
+Finally, Ilya Grigorik (way-smart guy from PostRank) blogged about it a couple of weeks ago ( <a href="http://www.igvita.com/2011/01/14/handlersocket-the-nosql-mysql-ruby/">here</a> ) and there's a fairly interesting discussion in the comments comparing this to prepared statements in Oracle.<br />
+<br />
+All of this reinforces my opinion that new generation ORMs are the technology that will finally allow the RDBMS apple cart to tip all the way over. Products like Redis, Riak, CouchDB, etc. are not enough on their own.<br />
+<br />
+The *really* interesting thing about HandlerSocket is that shows open source databases are perfect fodder for the next wave.

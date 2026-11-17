@@ -1,0 +1,56 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-3400529077123995909",
+  "title": "Migrating from SQL Server to Redshift",
+  "published": "2013-09-06T04:17:00.005-07:00",
+  "updated": "2013-11-14T03:10:51.577-08:00",
+  "labels": [],
+  "comments": [
+    {
+      "id": "4902361924837491121",
+      "author": "Anonymous",
+      "authorUrl": "https://www.blogger.com/profile/11572491641294915572",
+      "published": "2013-09-26T12:57:40.510-07:00",
+      "html": "Thanks for the help.  We are also moving from Sql Server to Redshift.  Have you changed you export process since the ACCEPTINVCHARS option has been added to the COPY command?"
+    },
+    {
+      "id": "1887092332726711594",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2013-09-26T15:04:34.825-07:00",
+      "html": "Hi Brock, <br /><br />I&#39;d like to think I had some influence on the addition of ACCEPTINVCHARS! I&#39;m sure others were bugging them about it though.<br /><br />It certainly resolves my issue with 0xBFEFEF but I haven&#39;t tested NUL or DEL chars as my SQLCMD extracts don&#39;t contain them.<br /><br />Also, FYI, they&#39;ve added support for LZO compressed sources so I&#39;m experimenting with that to see if it speeds up the extracts at all.<br /><br />Joe"
+    },
+    {
+      "id": "7110030545205795958",
+      "author": "Hassan Dibani",
+      "authorUrl": "https://www.blogger.com/profile/09460070559759481512",
+      "published": "2013-12-10T16:19:25.922-08:00",
+      "html": "Any reason why you did not consider Vectorwise or Paraccel?<br /><br />Full disclosure: I work for Actian."
+    },
+    {
+      "id": "3213498043760715911",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2013-12-11T05:50:44.549-08:00",
+      "html": "Hassan,<br /><br />Great question! Generally the answer to both is that I&#39;m consulting for a start-up and we need to move very quickly. Specifically we need to understand the product cost upfront and conduct a POC without wasting a lot of time on sales &#39;engagement&#39;. <br /><br />ParAccel was not a part of Actian when we did our initial evaluations. I got the clear impression that they were focussed on larger accounts and larger data sizes than ours.<br /><br />I did download VectorWise but found it very difficult to get it going properly on my server (Windows sadly). When I did get it running I found the Ingres tools amazingly bad (they seem like Delphi apps from the 90s). Plus the database does not (AFAICT) do any kind of compression. Plus there is no clearly posted pricing data. <br /><br />Redshift gives us a few things that a very attractive: decent (not amazing) performance, Postgres compatibility, clear pricing, the ability to scale up in small increments, etc. Neither VectoWise nor ParAccel nor any other Actan products is available on the AWS Marketplace (AFAIK). I honestly can&#39;t imagine why that is. Even the lumbering giant SAP has got their HANA database on there!<br /><br />Over the medium term my feeling is that Hadoop is eating the database market and the first course is MPP analytic databases. I hope Actian is working on something that runs in Hadoop (without requiring customer SerDe) as a huge priority. <br />"
+    },
+    {
+      "id": "2179761488400244495",
+      "author": "Anonymous",
+      "authorUrl": "https://www.blogger.com/profile/00421966410805302578",
+      "published": "2015-06-04T13:43:43.825-07:00",
+      "html": "Awesome info.. thanks for sharing this.<br /><br />Here is another link incase some one looking step-by-step instructions http://zappysys.com/posts/sql-server-to-redshift-data-load-using-ssis/"
+    },
+    {
+      "id": "3139004381876792618",
+      "author": "Roger S",
+      "authorUrl": "https://www.rogerspringer.com/",
+      "published": "2024-06-20T01:19:15.705-07:00",
+      "html": "Great blog post. "
+    }
+  ]
+}
+---
+An overview of the work required to migrate our large SQL Server data warehouse to Amazon Redshift. We faced and resolved a number of issues, particularly around the different Unicodes required by each database.<br />
+<br />
+<iframe src="https://www.slideshare.net/slideshow/embed_code/28236480" width="570" height="464" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC;border-width:1px 1px 0;margin-bottom:5px" allowfullscreen> </iframe> <div style="margin-bottom:5px"> <strong> <a href="https://www.slideshare.net/joeharris76/migration-to-redshift-from-sql-server" title="Migration to Redshift from SQL Server" target="_blank">Migration to Redshift from SQL Server</a> </strong> from <strong><a href="http://www.slideshare.net/joeharris76" target="_blank">joeharris76</a></strong> </div>

@@ -1,0 +1,85 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-7107900746098068495",
+  "title": "Data Management - Data is Data is Data is…",
+  "published": "2011-04-08T08:41:00.000-07:00",
+  "updated": "2011-04-08T08:41:39.029-07:00",
+  "labels": [
+    "database",
+    "dw",
+    "IT",
+    "no-sql",
+    "sql"
+  ],
+  "comments": [
+    {
+      "id": "5316983440448015511",
+      "author": "Anonymous",
+      "published": "2011-04-08T13:37:33.375-07:00",
+      "html": "Interesting post!<br /><br />I share same ideas that data is the primary matter and that systems that work with data should rely on some common method of representing and, preferably, defining data.<br /><br />Unfortunately, these aspects have been always blended in various data storage and processing systems (including programming languages) that expose or export data in custom formats using highly specialized interfaces (e.g. SQL).<br /><br />As a consequence, substantial programming and integratoin efforts are usually needed in order to provide data portability by data providers or to deal with custom data formats for data consumers. Systems interoperation, in general, falls under this category as well.<br /><br />I&#39;m working to address these aspects in the course of the Piqi project (http://piqi.org). It includes a powerful data definition language (Piqi), a standard way to represent data in XML, JSON and Protocol Buffers format, tools for type-based conversion between the three formats, etc.<br /><br />Piqi also provides methods for non-disruptive extension of data schemas, and schemas themselves are serializable. This, in turn, allows creation of self-describing backward- and forward- compatible data bundles."
+    },
+    {
+      "id": "8526982015462396998",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2011-04-08T13:43:19.446-07:00",
+      "html": "Alvarik,<br /><br />Thaks for commenting. Piqi looks very cool, almost exactly what I was envisioning. <br /><br />The next post in this sequence is going to about various NoSQL databases and how they&#39;re kind of half way there. <br /><br />Joe"
+    },
+    {
+      "id": "33059316266597806",
+      "author": "Anonymous",
+      "published": "2011-04-08T14:03:57.108-07:00",
+      "html": "Hi Joe,<br /><br />I&#39;m glad you liked Piqi. My primary use-case for it a cross-language data serialization system and an RPC system for OCaml and Erlang. I don&#39;t currently use it for creating self-describing data bundles so this part is still experimental and some details will be changing as I keep working on it. But I&#39;m very pleased what I&#39;ve got so far and the goal is to make it even more portable and robust.<br /><br />Looking forward to your next post!<br /><br />Anton"
+    }
+  ]
+}
+---
+<i><span class="Apple-style-span" style="font-size: x-small;">[Sometimes I want to write about one topic but I end up writing 1,500 words of background before I even touch on the subject at hand. Sometimes the background turns out to be more interesting; hopefully this is one of those times.]</span></i><br />
+<br />
+In this post I talk about the problems with mainstream data management, especially SQL databases. I then touch on the advantages of SQL databases and the good attributes we need to retain.<br />
+<br />
+<b>Data is Data is Data is…</b><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>Current IT practice splits data management into lots of niches: SQL databases, Email platforms, Network file systems, enterprise search, etc. There is plenty of overlap between niches and, in truth, the separations are artificial. It merely reflects the way systems are implemented, not fundamental data differences. Have a look at your email client; see those headers in the messages list (From, Subject, etc) they're just database field names and the message body is simply a BLOB field. Some email clients, e.g., Gmail, can also parse that blob and find links to previous messages, which is very much like a foreign key link.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>File systems seem less like a database at first glance but let's consider the big file system developments of the last 10 years ZFS and BTRFS. Both of these introduce database-like ideas to the file system such as copy-on-write (a la <a href="http://en.wikipedia.org/wiki/Multiversion_concurrency_control">MVCC</a>), deduplication (a la <a href="http://en.wikipedia.org/wiki/Database_normalization">normalisation</a>), data integrity guarantees (a la <a href="http://en.wikipedia.org/wiki/ACID">ACID</a>) and enhanced file metadata (a la SQL DDL).<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>The basic point I'm making is that data is data. Simple as that. It may be more or less 'structured' but structure and meaning are essentially equivalent. The most 'unstructured' file I can imagine is just plain text but the written word is still <b>very</b> structured. At a high level it has a lot of metadata (name, created, changed, size, etc.), it has structure embedded in the text itself (language, punctuation, words used, etc.) and, looking deeper, we can analyse the semantic content of the text using techniques like <a href="http://en.wikipedia.org/wiki/Natural_language_processing">NLP</a>.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>Data is data; it needs to be stored, changed, versioned, retrieved, backed up, restored, searched, indexed, etc. The methods may vary but <b>it's all just data</b>.<br />
+<br />
+<br />
+<b>The SQL Database Black Box</b><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><b>All</b> data cannot be kept in databases because, amongst other things, SQL databases are opaque to other applications. Enterprise search illustrates the issue. Most enterprise search apps can look into JDBC/ODBC accessible databases, profile the data and include its content in search results. However, access to any given database is typically highly restricted and there is a DBA whose job hangs on keeping that data safe and secure. The DBA must be convinced that the search system will not compromise the security of his data and this typically means limiting search access to the people who also have database access. This is a time consuming process and we have to repeat it for every database in the company.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>So a year later, when we have access to all SQL databases and a process to mirror access credentials, the next problem is that SQL provides no mechanism to trace data history. For example, I search for 'John Doe' and find a result from the CRM database. I look in the database and the record now has a name of 'Jane Doe'. Why did it change? When did it change? Who changed it? There is no baseline answer to these questions. The CRM application may record <i>some</i> of this information but how much? The database has internal mechanisms that trace some of this but each product has its own scheme and, worse, the tables are often not user accessible for security reasons.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>In my experience, 80% of the value <b>actually</b>&nbsp;gained from a data warehouse comes from resolving this issue in a single place and in a consistent way. Hence the growth of the MDM industry, but I won't digress on that. The data warehouse doesn't actually <i>solve</i> the problem, it merely limits the number of SQL databases that must be queried to 1. And, of course, we never manage to get <b>everything</b> in the DW.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>There are many other black box attributes of SQL databases such as: 2 very similar queries may perform in drastically different ways; background tasks can make the database extremely slow without warning; the database disk format cannot be accessed by other applications; the database &nbsp;may bypass the filesystem making us entirely reliant on the database to detect disk errors, etc., etc.<br />
+<br />
+<br />
+<b>The SQL Database Choke Point</b><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>Current SQL databases are also a very real constraint on day-to-day operation. For example, a large company may only be able to process bulk updates against a few percent of the customer base each night. SQL databases must be highly tuned towards high performance for single type of &nbsp;access query and that tuning usually makes other access styles unworkable. <br />
+<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>Further the schema of a production SQL database is effectively set in stone. Although SQL provides ALTER statements the performance and risk of using ALTER is so bad that it's never used. Instead we either add a new small table and use a join when we need the additional data, or we create a new table and export the existing data into it. Both of these operations impose significant overheads when all we really want is a new field. So, in practice, production SQL databases satisfy a single type of access, are very resistant to other access patterns and are very difficult to change.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>These issues are well recognised and the answer has come back that we need specialist SQL databases for each use case. Michael Stonebraker, in particular, has been beating a drum about this for at least 5 years (and, credit where it's due, Vertica paid off in spades). However, we haven't seen a huge uptake in specialist databases for markets other than analytics. In particular the mainstream OLTP market has very few specialist offerings. Perhaps it's a more difficult problem or perhaps the structure of SQL itself is less amenable to secondary innovation around OLTP. I sense a growing recognition that improvements in the OLTP space require significant re-engineering of existing applications.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>Specialist databases have succeeded to some extent in the data warehouse and business intelligence sphere. I think this exception proves the observation. 15 years ago I would add another complaint to my black box attributes: it was impossible to get reports and analysis from my production systems. The data warehouse was invented and gained popular acceptance simply because this was such a serious problem. The great thing about selling analytic databases for the last 15 years was that you weren't displacing a production system. Businesses don't immediately start losing money if the DW goes down. The same cannot be said of most other uses for SQL databases and that's why they will only be replaced slowly and only when there is a compelling reason (mainframes are still around, right?).<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<br />
+<b>There's a baby in this bathwater!</b><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>It's worth remembering the SQL databases offer a lot advantages. <a href="http://en.wikipedia.org/wiki/Codd%27s_12_rules">Codd outlined 12 rules that relational databases should follow</a>. I won't list them all here but at a high level a relational database maintains the absolute integrity of the data it stores and allows us to place constraints on that data, such as the type and length of the data or it's relation to other data. We take it for granted now but this was a real breakthrough and it took years to implement in practice.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>Just for kicks imagine a CRM system based on Word docs. When you want to update a customer's information you open their file and make whatever changes you want and then save it. The system only checks that the doc exists, you can change whatever you want and the system won't care. If you want the system to make sure you only change the right things you'll have to build that function yourself. That's more or less what data management was like before SQL databases.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<b>What to keep &amp; what to throw away</b><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>So what would our ideal data management platform look like? It persists data in a format that can be freely parsed by other applications, i.e., plain text (XML? JSON? <a href="http://en.wikipedia.org/wiki/Protocol_Buffers">Protocol Buffers</a>? ). It maintains data integrity at an atomic level probably by storing checksums alongside each item. It lets define stored data as strictly or loosely as we want but it enforces the definitions we set. All changes to our stored data actually create new versions and the system keeps a linked history of changes.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span><br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>I think we're starting to see systems emerge that address some of the issues above. It's still early days but I'm excited about projects like <a href="http://ceph.newdream.net/about/">Ceph</a> and the very new <a href="http://www.acunu.com/technology/">Acunu</a>.<br />
+<br />
+<br />
+<i>In my next post I'll look about how the new breed of NoSQL databases display some of the traits we need for our ideal data management platform.</i><br />
+<div><br />
+</div>

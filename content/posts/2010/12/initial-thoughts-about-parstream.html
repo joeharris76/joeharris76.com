@@ -1,0 +1,79 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-2708687753491203972",
+  "title": "Initial thoughts about ParStream",
+  "published": "2010-12-15T13:59:00.000-08:00",
+  "updated": "2011-04-05T02:14:42.655-07:00",
+  "labels": [
+    "bi",
+    "columnar",
+    "dw",
+    "enterprise",
+    "gpu",
+    "open-source",
+    "sql"
+  ],
+  "comments": [
+    {
+      "id": "5689717412040131",
+      "author": "Anonymous",
+      "published": "2013-04-11T17:02:57.717-07:00",
+      "html": "Parstream CEO Mike Hummel told me to my face 2 days ago that he will never support Windows. It seemed like an ideological reason based on the way he said it. Bummer as a Windows Engineer."
+    },
+    {
+      "id": "8754304338051286947",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2013-04-12T03:29:38.727-07:00",
+      "html": "Thanks for the comment. Sadly, I&#39;m not at all surprised. I know they read this post but I don&#39;t believe they took any of to heart. Which is fair enough I guess. Who am I to tell them what to do? <br /><br />I doubt ParStream will ever succeed in any large way actually. Their window of opportunity has been closed by the new high performance SQL layers being added by Hadoop. The value of having a single site for all your data will outweigh query speed for virtually all potential customers. Add on the price (e.g. approaching zero) and the deal is done.<br /><br />They could try to pivot into some kind of &quot;GPU accelerated Hadoop&quot; offering but Rainstor&#39;s lack of traction suggests that a viable Hadoop product strategy must include a significant free and open component which I doubt they are prepared to offer."
+    },
+    {
+      "id": "3563278931089908",
+      "author": "Michael Hummel, CEO ParStream",
+      "authorUrl": "https://www.blogger.com/profile/11190430236168322627",
+      "published": "2013-10-18T04:19:13.034-07:00",
+      "html": "Hi Joe,<br />I really feel bad about not having commented on your blog (years ago), sorry for that.<br /><br />Anonymous is right in claiming that we will not support Windows in the near-term. We are happy with Linux server systems and over all these years have had only one opportunity we missed due to missing Windows platform support.<br /><br />Regarding Joe&#39;s comment about traction I seriously hope you are wrong ;-) at least we are doing everything to make our product as appealing as possible. ParStream is often used on top of Hadoop, i.e. using Hadoop as a data-sea to collect everything and ParStream on top for explorative data analytics. Clearly ParStream has to extract the data from Hadoop and store it in the ParStream columnar store - but, Impala is doing the same (maybe a bit more secretly). There is no way to achieve sub-second or second query speed with Hadoop or any product on top as the data structure does not allow for such fast query processing. <br />If you use-case is about analytics it makes a hell of a lot of sense to store the data in a data structure that is good / ideal for analytics. And if you want to apply columnar filters and/or columnar aggregations than a columnar data store is superior to a row oriented storage system like hadoop or even worse key-value stores like HBase / Casandra et al.<br />We would never claim that ParStream can do it all, but the same is true for Hadoop and people who work intensively with Big Data have understood - Hadoop has been demystified and that is good for the big data space AND for hadoop itself."
+    },
+    {
+      "id": "1598919771041640229",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2013-10-18T12:20:30.034-07:00",
+      "html": "Thanks for your comment. I&#39;m certainly glad to hear that ParStream is still in the game.<br /><br />I&#39;ve recently moved my customer&#39;s medium-large DW from SQL Server to Amazon Redshift. In many ways I/we are your perfect prospect: small, risk-tolerant, many billions of rows, wants to analyze them quickly and ** knows that ParStream exists **.<br /><br />We _literally_ did not have time to get into the typical analytic DB sales cycle where it takes 3 calls to get a price and then they insist on a lot of hand-holding during the evaluation/POC. ParStream cannot be downloaded for a trial (a la Vertica), is not on the AWS Marketplace (a la SAP HANA) and has no SaaS offering - so sadly you were never in the running. <br /><br />Regarding Hadoop, I don&#39;t for a second question that ParStream is much faster. My concern is that the pool of customers who place enough value on the speed of ParStream is not large enough to sustain a significant business. Plus Impala / Stinger have a lot of head room to get much faster quickly. Plus many (possibly most) customers in this space are going to be looking at things like Storm when the need very fast time-to-analysis.<br /><br />I noticed you&#39;ve dropped the appliance and de-emphasised the GPU aspect of the product. That seems wise given computing trends, e.g. lack of taction for server GPUs and the likely implosion of NVidia. However it&#39;s left the site a little bit lacking in technical specifics. I&#39;d like to see much more detailed case studies, more technical details of how ParStream achieves it&#39;s speed and maybe even something like the Start Schema Benchmark.<br /><br />You&#39;ve taken some excellent funding so clearly you have a compelling story to tell investors. My personal opinion is that analytic customers now have so many options that you need to make it very, very easy for them to choose your product. I think your biggest missing piece right now is a SaaS or AWS Marketplace offering that proves your value with minimal customer investment (time or money).<br /><br />Good luck"
+    }
+  ]
+}
+---
+So here are my thoughts about ParStream based on researching their product on the internet only. I have not used the product, so I am simply assuming it lives up to all claims. As an analytics user and a BI-DW practitioner I sincerely hope that ParStream succeeds.<br />
+<br />
+<b>I'm a GPU believer</b><br />
+I'm a long time believer in the importance of utilising GPU for challenging database problems. I wrote a post in July 2009 about using GPUs for databases and implored database vendors to move in that direction: "Why GPUs matter for DW/BI" (http://joeharris76.blogspot.com/2009/07/why-gpus-matter-for-dwbi.html). &nbsp;Here's the key quote - "There's a new world coming. It has a lot of cores. It will require new approaches. That world is accessible today through GPUs. Database vendors who move in this direction now will gain market share and momentum. Those who think they can wait on Intel and 'traditional' CPUs to 'catch up' may live to regret it."<br />
+<br />
+<b>On the right track</b><br />
+I think ParStream is *fundamentally* on the right track with a GPU accelerated analytic database. The ParStream presentation from Mike Hummel (http://www.youtube.com/watch?v=knicXkXd9hQ) talks about a query that took 12 minutes on Oracle taking just a few <b>*miliseconds*</b> on ParStream. If that is even half right the potential to shake up the industry and radically raise the bar on database performance is very exciting.<br />
+<br />
+<b>Reminiscent of Netezza</b><br />
+I remember the first time I used Netezza back in 2004. I had just taken a new role and my new company had recently installed a first generation Netezza appliance. In my previous job we had an Oracle data warehouse that was updated *weekly* and contained roughly 100 million rows. Queries commonly took *hours* to return. The Netezza machine held just less than 1 *billion* rows. I ran the following query: "SELECT month, &nbsp;COUNT(*), SUM(call_value) FROM cdr GROUP BY month;". It came back in 15 seconds! I was literally blown away.<br />
+<br />
+<b>A fast database changes the game</b><br />
+When you have a very fast analytic databases it totally changes the game. You can ask more questions, ask more complex questions and ask them more often. Analytics requires a lot of trial and error and removing time spent waiting on the database enables a new spectrum of possibilities. For example, Netezza enabled me to reprice _every_ call in our database against _every_ one of our competitors tariffs (i.e. an 'explosive' operation: 50 mil records in =&gt; 800 mil records out) and then calculate the best *possible* price for each customer on any tariff. I used that information to benchmark my company on "value for money" and to understand the hidden drivers for customer churn.<br />
+<br />
+<b>ParStream appliance strategy</b>:<br />
+So, given that background, let's look at the positioning of ParStream, the potential problems they may face, and the opportunities they need to pursue.<br />
+<br />
+<b>ParStream is not Netezza</b><br />
+I've positively compared ParStream to Netezza above so you might expect me to applaud ParStream for offering an appliance. Sadly not; Netezza's appliance success was due to unique factors that ParStream cannot replicate. Netezza had to use custom hardware because they use a custom FPGA chip. Customers were (and are) nervous about investing heavily in such hardware, however Netezza goes to great lengths to reassure them; providing service guarantees, plenty of spare parts and using commodity components wherever possible (power supplies, disks, host server, etc.). Also we must remember that most customers looking at Netezza were using very large servers (or server clusters) and required *very many* disks to get reasonable I/O performance for their databases. Netezza was actually reducing complexity for those customers.<br />
+<br />
+<b>The world has changed going into 2011</b><br />
+ParStream cannot replicate those market conditions. The world has changed considerably going into 2011 and different factors need to be emphasised. ParStream relies on Nvidia GPUs that are widely available and installed on commodity interconnects (e.g. PCIe). Moreover there are high quality server offerings available in 2 form factors that make the appliance strategy more of a liability than an asset. First, Nvidia (and others) sell 1U rack mounted 'server' that contain 4 GPUs and connect to 'host' server via a PCIe card. Second Supermicro (and others) sell 4U 'super' servers that contain 2 Intel Xeons and &nbsp;4 GPUs in a pre-integrated package. The ParStream appliance may well be superior to these offerings in some key way however such advantages will be quickly wiped by out as the server manufactures continuously refresh their product line.<br />
+<br />
+<b>Focus on the database software business</b><br />
+ParStream should focus on the database software business where they have a huge advantage not the server business where they have huge disadvantages. You should read this article if you have any further doubts: "The Power of Commodity Hardware" (http://www.svadventure.com/svadventure/2009/01/the-power-of-commodity-hardware.html). Key quotes: "Customers love commodity hardware.", "Competing with HP, IBM, and Dell is dumb.", "Commodity hardware is much more capital efficient". &nbsp;Also consider the fates of Kickfire and Dataupia who floundered on a database appliance strategy, and ParAccel who is going strong after initially offering an appliance and quickly moving to emphasise software-only.<br />
+<br />
+<b>Position GPUs as a new commodity</b><br />
+ParStream must position GPUs and GPU acceleration as a new commodity. Explain that GPUs are an essential part of <b>all</b>&nbsp;serious supercomputers and the technology is being embraced by everyone; Intel with Larabee, AMD with Fusion, etc. Emphasise the option to add 'commodity' 4 GPU pizza boxes servers alongside a customer's existing Xeon/Opteron servers and, using ParStream, make huge performance gains. Talk to Dell customers about using a single Dell PowerEdge C410x GPU chasis (http://www.dell.com/us/en/enterprise/servers/poweredge-c410x/pd.aspx) to accelerate an entire rack of "standard" servers running ParStream. The message must be clear: ParStream runs on commodity hardware; you may not have purchased GPU hardware before but you can get exactly what ParStream needs from your preferred vendor.<br />
+<br />
+One final point here; ParStream needs to make Windows support a priority. This is probably not going to be fun, technically speaking, but Windows support will be important for the markets that ParStream should target (which will have to be another post, sadly).<br />
+<br />
+UPDATE -&nbsp;I followed this post up with:<br />
+<a href="/2011/01/analytic-database-market-fly-over.html">An overview of the analytic database market</a>, <a href="/2011/03/analytic-database-market-segmentation.html">a simple segmentation of the main analytic database vendors</a>, and <a href="/2011/03/analytic-database-market-opportunities.html">a summary of the key opportunities I see in the analytic databases market (esp. for ParStream and RainStor)</a>
