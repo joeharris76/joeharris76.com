@@ -35,7 +35,8 @@ jobs:
           path: dist
       - name: Stop before deploy when no target is set
         if: env.SITE_DEPLOY_TARGET != 'rehearsal' && env.SITE_DEPLOY_TARGET != 'production'
-        run: echo "SITE_DEPLOY_TARGET is '${SITE_DEPLOY_TARGET}': the site built and passed its checks; nothing was deployed." >> "$GITHUB_STEP_SUMMARY"
+        run: |
+          echo "SITE_DEPLOY_TARGET is '${SITE_DEPLOY_TARGET}': the site built and passed its checks; nothing was deployed." >> "$GITHUB_STEP_SUMMARY"
 
   deploy:
     name: deploy and probe
