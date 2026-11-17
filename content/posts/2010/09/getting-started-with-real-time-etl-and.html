@@ -1,0 +1,73 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-7517033858199552721",
+  "title": "Getting started with real-time ETL and the dark art of polling:",
+  "published": "2010-09-30T03:29:00.000-07:00",
+  "updated": "2010-09-30T03:41:29.738-07:00",
+  "labels": [
+    "api",
+    "cdc",
+    "etl",
+    "polling",
+    "real-time"
+  ],
+  "comments": [
+    {
+      "id": "6215866032087692244",
+      "author": "Anonymous",
+      "published": "2010-09-30T12:14:17.989-07:00",
+      "html": "Hey Joe<br />Are you doing any real-time ETL polling with PDI?  If so, it would be interesting to hear how you&#39;re doing that, and what works/doesn&#39;t work...<br /><br />Also, what do you think about push-driven ETL, where a webhook initiates an ETL or data integration process...?<br /><br />Webhooks seem somewhat unreliable to me, this Internet thing can go down from time to time.<br />I&#39;ve always thought that message queues might be a better way to handle real-time notifications, e.g. amazon SQS or other queue message brokers.  What do you think?"
+    },
+    {
+      "id": "4068668146598483654",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2010-10-01T01:24:16.165-07:00",
+      "html": "Anthony,<br /><br />Perhaps I should do a full post on this but in brief…<br /><br />I&#39;m doing a web app integration service and using PDI to do the heavy lifting. I have a number of &#39;worker&#39; jobs that run continuously and pass work between themselves using queues (which are actually just MySQL tables for now).<br /><br />As far as webhooks, I have a Ruby based app that listens for the callbacks and adds them to a queue for processing. The &#39;pull&#39; worker then retrieves them and works them.<br /><br />The biggest problem with using PDI is not being able to use PUT or DELETE HTTP verbs with the HTTP Client step. On the other hand, I went a long way down the road with a pure Ruby solution and found it to be impractical for the kind of integration I&#39;m doing (ymmv).<br /><br />Joe"
+    }
+  ]
+}
+---
+&nbsp;&nbsp; &nbsp;There has been a lot of discussion about real-time ETL over the last few years and a lot of it can be summarised as "don't do it unless you REALLY need to". Helpful, eh? I recently had the need to deal with real-time for the first time so I thought I would summarise my approach to give you some food for thought if you're starting (or struggling) on this same journey.<br />
+<b><br />
+</b><br />
+<b>Is it really real-time?</b><br />
+&nbsp;&nbsp; &nbsp;The question often asked is "how far behind the source (in time) can you be, and still call it real-time?". I don't really care about this kind of latency. I thinks it's basically posturing; "I'm more real-time than you are". My feeling is that I want something that works continuously first and I'll worry about latency later. As long as the process is always working to catch up to the source that's a good start.<br />
+<b><br />
+</b><br />
+<b>Old options are out</b><br />
+&nbsp;&nbsp; &nbsp;Next question (and one that actually matters): "How will you know when the data has changed on the source?" This is an old classic from batch ETL; the difference is that we have taken some of our traditional options away. In batch ETL we could periodically extract the whole resource and do a complete compare. Once you go real-time, this approach will actually miss a large number of changes that update the same resource multiple times. In fact, I would say that repeated updates of a single resource are the main type of insight that real-time adds, so you better make sure you're getting it.<br />
+<b><br />
+</b><br />
+<b>CDC: &nbsp;awesome and out of reach</b><br />
+&nbsp;&nbsp; &nbsp;What can you do to capture changes? Your first (and best) option is change data capture. CDC itself is beyond the scope of this discussion, however the main point is that it is tightly bound to the source system. If you've been around data warehousing or data integration for more than 5 minutes you can see how that could be a problem. There are numerous half-way house approaches which I'm won't go over; suffice it to say that most enterprise databases have metadata tables and pseudo-column values that they use internally to keep track of changes and these can be a rich seem of information for your real-time ETL quest.<br />
+<b><br />
+</b><br />
+<b>Polling: painful but necessary</b><br />
+&nbsp;&nbsp; &nbsp;You will inevitably come across some system which allows you no detailed interaction with it's backend. Web based services are the perfect case here - you're not going to get access to the remote database so you just have to cope with using their API. And that leaves you with - POLLING. Basically asking the source system: 'has this resource changed' or (when you can't aks that) extracting the resource and comparing it to your copy.<br />
+&nbsp;&nbsp; &nbsp;A naive approach would be to simply iterate through the entire list of resources over a given interval. The time it takes to complete an iteration would be, roughly speaking, your latency from live. However, DON'T DO THIS unless you want to be strangled by the SysAdmin for the source or banned from API access to the web service.<br />
+<b><br />
+</b><br />
+<b>My 'First law of real-time ETL'</b><br />
+&nbsp;&nbsp; &nbsp;So I would propose the following heuristic: data changed by humans follows Nexton's first law. Restated:<br />
+<span class="Apple-tab-span" style="white-space: pre;"><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><i> </i></span></span><b><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><i>'Data in motion will stay in motion, data at rest will stay at rest.'&nbsp;</i></span></b><br />
+&nbsp;&nbsp; &nbsp;Basically a resource that has changed is more likely be changed again when you next check. Conversely a resource which has not changed since you last checked is less likely to changed when you check again. To implment this in your polling process you would simply track how many times you've checked the resource without finding a change and adjust your retry interval accordingly.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>For example:<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>&gt; Check resource - no change - unchanged count = 1 - next retry = 4 min<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>&gt; Check resource - no change - unchanged count = 2 - next retry = 8 min<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>&gt; Check resource - no change - unchanged count = 3 - next retry = 16 min<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>&gt; Check resource - no change - unchanged count = 4 - next retry = 32 min<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>&gt; Check resource - CHANGED - unchanged count = 0 - next retry = 1 min<br />
+<br />
+<b></b><br />
+<b><div><span class="Apple-style-span" style="font-weight: normal;"><b>Keep it simple stupid</b></span></div></b>&nbsp;&nbsp; &nbsp;This a simplistic approach but it can massively reduce the strain you place on the source system. You should also be aware of system driven changes (i.e. invoice generation, etc.) and data relationships (i.e. company address changes &gt; you need to check all other company elements sooner than scheduled). You should also note that changes which are not made by humans are much less likely to obey this heuristic.<br />
+<span class="Apple-style-span" style="font-weight: 800;"><span class="Apple-style-span" style="font-weight: normal;"><br />
+</span></span><br />
+<b>A note for the web dudes</b><br />
+&nbsp;&nbsp; &nbsp;Finally, if you are mostly working with web services then familarise yourself with the following:<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>&gt; Webhooks, basically change data capture for the web. You subscribe to a resource and changes are notified to a location you specify. Sadly, webhooks are not widely supported right now.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>&gt; RSS, that little orange icon that you see on every blog you read. Many services offer RSS feeds of recently changed data and this is a good comprise.<br />
+<span class="Apple-tab-span" style="white-space: pre;"> </span>&gt; E-tag and If-Modified-Since headers, HTTP header elements that push the burden of looking for changes off to the remote service (which is nice).<br />
+<br />
+<b></b><br />
+<b><div><span class="Apple-style-span" style="font-weight: normal;"><b>Good luck.</b></span></div></b>

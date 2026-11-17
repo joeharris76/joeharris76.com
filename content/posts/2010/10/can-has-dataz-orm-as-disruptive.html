@@ -1,0 +1,125 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-6016398744640932464",
+  "title": "Disrespecting the database? ORM as disruptive technology",
+  "published": "2010-10-22T07:08:00.000-07:00",
+  "updated": "2010-10-25T04:14:47.120-07:00",
+  "labels": [
+    "bi",
+    "datamapper",
+    "dw",
+    "etl",
+    "open-source",
+    "orm",
+    "sql"
+  ],
+  "comments": []
+}
+---
+The premise of this post is that ORMs are a disruptive innovation for the all parts of the IT industry that utilise databases, particularly relational databases. I'm particularly interested in the ultimate impact of ORMs on my work in the BI-DW-OLAP-DSS-{insert acronym here} industry.<br />
+<br />
+<b>What makes a 'disruptive technology'?</b> <br />
+&nbsp;&nbsp; &nbsp; In case you are not familiar with <a href="http://en.wikipedia.org/wiki/Innovator's_dilemma">the "innovator's dilemma" concept</a>; it was originally expressed in those terms by Clayton M. Christensen in the article 'Disruptive Technologies: Catching the Wave'. <br />
+&nbsp;&nbsp; &nbsp;<i> "Generally, disruptive innovations were technologically straightforward, consisting of off-the-shelf components put together in a product architecture that was often simpler than prior approaches. They offered less of what customers in established markets wanted and so could rarely be initially employed there. They offered a different package of attributes valued only in emerging markets remote from, and unimportant to, the mainstream."</i><br />
+<br />
+<b>Let's talk about ORMs</b><br />
+&nbsp;&nbsp; &nbsp; If you are a true BI-DW person you may not have heard of ORM and are unlikely to have come across one directly in your work. An <a href="http://en.wikipedia.org/wiki/Object-relational_mapping">ORM [Object-Relational Mapper]</a> is simply a set of code routines that 'map' tables and columns in a relational database to objects, attributes and methods in a programming language. Programmers can then interact with the data stored by the underlying database without writing any SQL.<br />
+<br />
+<b>An ugly history with DBAs</b><br />
+&nbsp;&nbsp; &nbsp; Now, as you'd probably imagine, DBA's hate ORMs and for good reason. They have typically produced horrible SQL and correspondingly awful performance problems for the DBAs to deal with. ORM use in "enterprise" IT environments is patchy and somewhat limited. It seems like a lot enterprise ORM use is kept out of sight and only comes to light when the DBAs get <b>really</b> fired up about some bad SQL that keeps reappearing every time an update to the software is released.<br />
+&nbsp;&nbsp; &nbsp; The early ORMs were rightly criticised (Hibernate seems to have taken the most heat) but ORMs haven't gone away. The sweet spot for early ORMs was small and 'simple' transactional applications. The kind of app that is needed quickly and where imperfect SQL was not a huge issue. But ORMs keep evolving and becoming more sophisticated in the way they generate SQL and deal with databases. This is where the disruptive innovation part comes in.<br />
+<br />
+<b>The hockey stick graph</b><br />
+<div class="separator" style="clear: both; text-align: center;"><a href="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Disruptivetechnology.gif/450px-Disruptivetechnology.gif" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8e/Disruptivetechnology.gif/450px-Disruptivetechnology.gif" /></a></div>&nbsp;&nbsp; &nbsp; Looking at the graph from the Wikipedia article I linked above you can see that ORMs started in the bottom left "low quality use" corner. <b>My entire point for this post is that ORMs are going to follow the "disruptive technology" curve and eventually they will come be the dominate way in which ALL database access occurs.</b> Seriously.<br />
+&nbsp;&nbsp; &nbsp; Let me explain why I see this happening. There are 3 good technical reasons and a human reason. As usual the human reason is the trump card.<br />
+<br />
+<b>ORMs are getting better quickly</b><br />
+&nbsp;&nbsp; &nbsp; First, we're seeing much better ORMs developed. In particular I want to draw your attention to Datamapper. It's a Ruby ORM that's been around for about 2 and a half years. The interesting thing about Datamapper (for me) is how much respect it has for the database. DB access is designed to minimise the number of queries hitting the backend and at the same to minimise the data being pulled out unnecessarily (i.e. only get Text/Blob fields if you really want them). Here's the kicker though: it supports foreign keys. Real (honest-to-goodness, enforced-by-the-database) foreign keys. Nice.<br />
+<br />
+<b>ORMs are the ultimate metadata layer</b><br />
+&nbsp;&nbsp; &nbsp;Second, because an &nbsp;ORM is deeply involved in the application itself it can contain a much richer set of metadata about the data that's being stored. Compare the following SQL DDL with the equivalent ORM setup code.<br />
+<br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">CREATE TABLE users (</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;id &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; int(10) &nbsp; &nbsp; NOT NULL AUTO_INCREMENT,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;tenant &nbsp; &nbsp; &nbsp; int(10) &nbsp; &nbsp; NOT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;first_name &nbsp; varchar(50) NOT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;last_name &nbsp; &nbsp;varchar(50) NOT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;title &nbsp; &nbsp; &nbsp; &nbsp;varchar(50) DEFAULT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;email &nbsp; &nbsp; &nbsp; &nbsp;varchar(99) DEFAULT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;passhash &nbsp; &nbsp; varchar(50) DEFAULT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;salt &nbsp; &nbsp; &nbsp; &nbsp; varchar(50) DEFAULT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;permission &nbsp; int(11) &nbsp; &nbsp; DEFAULT '1',</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;created_at &nbsp; datetime &nbsp; &nbsp;NOT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;updated_at &nbsp; datetime &nbsp; &nbsp;DEFAULT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;deleted_at &nbsp; datetime &nbsp; &nbsp;NOT NULL DEFAULT '2999-12-31',</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;manager_id &nbsp; int(10) &nbsp; &nbsp; NOT NULL,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;PRIMARY KEY (id, tenant),</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;UNIQUE INDEX &nbsp;unique_users_email (email),</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;INDEX index_users_manager (manager_id),</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;INDEX users_tenant_fk (tenant),</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;CONSTRAINT users_tenant_fk &nbsp;FOREIGN KEY (tenant)</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;REFERENCES &nbsp;tenants (id)&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ON DELETE NO ACTION&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ON UPDATE NO ACTION,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;CONSTRAINT users_manager_fk FOREIGN KEY (manager_id)</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;REFERENCES &nbsp;users (id)&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ON DELETE NO ACTION&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;ON UPDATE NO ACTION</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">);</span></span><br />
+&nbsp;&nbsp; &nbsp;What can we tell about this table? It's got an FK to itself on 'manager_id' and another to 'tenants' on 'tenant'. &nbsp;We don't gain a lot of insight. Here's the Datamapper syntax:<br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">class User</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;include DataMapper::Resource</span></span><br />
+<span class="Apple-tab-span" style="white-space: pre;"><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;"> </span></span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :id,<span class="Apple-tab-span" style="white-space: pre;">  </span>Serial</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :tenant,<span class="Apple-tab-span" style="white-space: pre;"> </span>Integer, &nbsp;:min =&gt; 0, :required =&gt; true, :key =&gt; true</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :first_name,<span class="Apple-tab-span" style="white-space: pre;"> </span>String, &nbsp; :required =&gt; true &nbsp; &nbsp;&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :last_name,<span class="Apple-tab-span" style="white-space: pre;"> </span>String, &nbsp; :required =&gt; true &nbsp; &nbsp;&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :title, &nbsp; &nbsp; &nbsp;String &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :email, &nbsp; &nbsp; &nbsp;String, &nbsp; :length =&gt; (5..99), :unique =&gt; true,&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :format =&gt; :email_address,</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :messages =&gt; {:presence =&gt; 'We need your email address.',</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :is_unique =&gt; 'That email is already registered.',</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; :format &nbsp; &nbsp;=&gt; "That's not an email address" }</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :passhash, &nbsp; String</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :salt, &nbsp; &nbsp; &nbsp; String</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :permission, Integer, &nbsp;:default =&gt; 1 &nbsp;&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :phone,<span class="Apple-tab-span" style="white-space: pre;"> </span>String &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :mobile,<span class="Apple-tab-span" style="white-space: pre;"> </span>String &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :created_at,<span class="Apple-tab-span" style="white-space: pre;"> </span>DateTime, :required =&gt; true</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :updated_at,<span class="Apple-tab-span" style="white-space: pre;"> </span>DateTime</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;property :deleted_at,<span class="Apple-tab-span" style="white-space: pre;"> </span>ParanoidDateTime, :required =&gt; true</span></span><br />
+<span class="Apple-tab-span" style="white-space: pre;"><span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;"> </span></span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;has 1, &nbsp;:manager</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;has n, &nbsp;:authorities</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;has n, &nbsp;:subscriptions, :through =&gt; :authorities</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;"><br />
+</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;belongs_to :tenant, &nbsp;:parent_key =&gt; [:id], :child_key =&gt; [:tenant]</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">&nbsp;&nbsp;belongs_to :manager, self&nbsp;</span></span><br />
+<span class="Apple-style-span" style="font-family: 'Courier New', Courier, monospace;"><span class="Apple-style-span" style="font-size: small;">end</span></span><br />
+&nbsp;&nbsp; &nbsp;An awful lot more insightful you ask me, and I actually stripped out 50% of the metadata to avoid distracting you. We can see that:<br />
+&nbsp;&nbsp;Columns<br />
+&nbsp;&nbsp; &nbsp; &gt; Email must be unique, it has a Min and Max length and a specific format.<br />
+&nbsp;&nbsp; &nbsp; &gt; Deleted_At has a special type ParanoidDateTime, which means deletes are logical not physical.<br />
+&nbsp;&nbsp;Child Tables&nbsp;<i>{Try finding this out in SQL…}</i><br />
+&nbsp;&nbsp; &nbsp; &gt; The table has an FK that depends on it from Authorities (1 to many)<br />
+&nbsp;&nbsp; &nbsp; &gt; a relationship to Subscriptions through Authorities (many to many)<br />
+&nbsp;&nbsp; &nbsp;We're getting a much richer set of metadata here and it's being specified this way because it's useful for the developer not because we're trying to specify a top-down data dictionary. The really interesting thing about the ORM example is that nothing prevents us from enriching this further. We are not bound by the constraints of SQL 99/2003/etc and the way it's been implemented by the vendor.<br />
+&nbsp;&nbsp; &nbsp; We've been talking about the power and importance of metadata for at least 10 years and, truthfully, we've made almost no progress. Every new BI-DW-ETL-OLAP project I work on still has to start more or less from nothing. The rise of ORMs creates an inflection point where we can change that if we become involved in the systems early in their lifecycle.<br />
+<br />
+<b>An aside on "metadata layers"</b><br />
+&nbsp;&nbsp; &nbsp;There is another point here and it's important. We could make a lot of progress simply by using ORMs to interact with our existing (so called 'legacy') databases. Datamapper has a lot features and tricks for accommodating theses databases and it's open source so we can add anything else we need.<br />
+&nbsp;&nbsp; &nbsp;Imagine an ETL tool that interacted with the database via Datamapper instead of using ODBC/JDBC plus it's own metadata. You would start by declaring a very simple model, just table-column-datatype, and then as you learned more about the data you would specify that learning (new metadata) in the the ORM itself. I think that's an incredibly powerful concept. The ETL becomes purely for orchestration and all of the knowledge about how to interact with sources and destinations is held in a way that is usable by downstream tools (like a reporting tool or another ETL process). <br />
+&nbsp;&nbsp; &nbsp;I imagine this is what the Business Objects guys had in mind when they created their metadata layer ('Universes' in BO parlance) back in the 90s. To my reckoning they didn't quite get there. The re-use of Universe metadata for other processes is (in my experience) non-existent. Yet here is a universal metadata layer; spontaneously realised and completely open for everyone to take advantage of.<br />
+<br />
+<b>ORMs will ultimately write better SQL</b><br />
+&nbsp;&nbsp; &nbsp;Third, ORMs can generate much better SQL than people do. The human element in any technology is the most unpredictable. It's generally not a scheduled report that brings down the database. It's usually a badly formed query submitted ad-hoc by a user. Maybe this isn't the case right now but the existence of Datamapper indicates we're getting close.<br />
+&nbsp;&nbsp; &nbsp;Clearly SQL is a complex domain and it will take time for ORMs to be able to cover all of the edge cases, particularly in analytics. However, let me refer you to the previous discussion of Business Objects Universes. If you review the SQL BO generates you'll see that the bar is not set all very high.<br />
+<br />
+<b>ORMs are&nbsp;blessed by the kingmakers</b><br />
+&nbsp;&nbsp; &nbsp;Fourth, developers love ORMs. Stephen O'Grady from RedMonk wrote recently that developers are the new/old kingmakers. He has a great quote from&nbsp;Abraham Lincoln&nbsp;“With public sentiment, nothing can fail; without it nothing can succeed.” ORMs have the kind of positive sentiment that your fancy data dictionary / master data / shared metadata project could never dream of. Developers want to use an ORM for their projects because it helps them. They want to stuff all of the beautiful metadata in there. They want to take huge chunks business logic out of spaghetti code and put into a place where we can get at it and reuse it. Who are we to say they shouldn't?<br />
+<br />
+<b>A final thought on BI becoming "operationalised"</b><br />
+&nbsp;&nbsp; &nbsp;My final thought for you is that the new 'edge' of BI is in putting classical BI functionality into operational apps, particularly web apps. If you think this post is a call for existing BI companies to get onboard with ORMs then you are only half right. It's also a warning that the way data is accessed is changing and a lot of core BI-DW skillsets may feel a bit like being a mainframe specialist someday soon.<br />
+<b><br />
+</b>

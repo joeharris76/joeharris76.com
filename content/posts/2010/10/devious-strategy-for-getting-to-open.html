@@ -1,0 +1,90 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-217196899719393733",
+  "title": "The easy way to go open source in BI-DW: slipsteaming",
+  "published": "2010-10-08T04:07:00.000-07:00",
+  "updated": "2010-10-10T02:09:32.632-07:00",
+  "labels": [
+    "bi",
+    "dw",
+    "enterprise",
+    "etl",
+    "IT",
+    "open-source"
+  ],
+  "comments": [
+    {
+      "id": "1977948286612391947",
+      "author": "Alan Musnikow",
+      "authorUrl": "https://www.blogger.com/profile/17225643591728339187",
+      "published": "2010-10-08T15:19:23.709-07:00",
+      "html": "In the &quot;Open Open Source Analytic Databases&quot; section, where you say &quot;limited DDL&quot; did you mean limited DML?<br />For example, the data manipulation language of the free edition of Infobright is so limited that it does not allow insert, update, and delete."
+    },
+    {
+      "id": "2543557101993559435",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2010-10-10T02:12:21.131-07:00",
+      "html": "Alan,<br /><br />Good point, I did mean DML. I changed it to limited SQL as both the DML and DDL are limited for these databases.<br /><br />Joe"
+    }
+  ]
+}
+---
+I'd like to propose a slightly devious strategy for getting open source Business Intelligence &amp; Data Warehousing into your company. You've probably heard a lot about open source BI / DW offerings in the last few years. You're kind of self-selected into that group by simply reading this post! However, just in case, I'll wrap up a few of the leading lights for you. This is by no means comprehensive, consider it an invitation to do some 'googling'.<br />
+<br />
+<b>Open Source Reporting / Dashboards</b><br />
+&gt; Pentaho: Open Core offering, very complete BI suite, the standard bearer IMO<br />
+&gt; Jaspersoft: Open Core offering, very complete BI suite <br />
+&gt; Actuate/BIRT: BIRT is very open, other offerings less clear, more OEM focused&nbsp; <br />
+&gt; SpagoBI: The 'most' open of the FLOSS BI offerings, possibly less mature&nbsp; <br />
+&gt; Palo: I'm kind of confused about what's open/closed but I hear good things <br />
+<br />
+<b>Open Source ETL / Data Integration </b><br />
+&gt; Pentaho PDI/Kettle: Stream based, Open Core, excellent for multi-core/server <br />
+&gt; Talend: Code generator, Open Core, suited to single big machine processing&nbsp; <br />
+&gt; Palo ETL: Tightly integrated with Palo suite, if you like Palo give it a look<br />
+&gt; CloverETL: New offering with a lot of features 'checked off'<br />
+&gt; Apatar: Another new offering with a lot of features claimed<br />
+<br />
+<b>Open Source Analytic Databases</b><br />
+&gt; Infobright: MySQL storage engine, Open Core, good compression, limited <s>DDL</s> SQL<br />
+&gt; InfiniDB: MySQL storage engine, Open Core, maximises modern CPUs , limited <s>DDL</s>&nbsp;SQL<br />
+&gt; LucidDB: Java based, completely open, good compression, supports most of SQL <br />
+&gt; MonetDB: completely open but not very active, good compression, likes a lot of RAM<br />
+&gt; VectorWise:&nbsp; promising to become open soon, maximises modern CPUs, good 'buzz'<br />
+&gt; Greenplum: kinda-sorta open, free 'single node edition', good SQL support<br />
+<br />
+<b>Open Source OLAP</b><br />
+&gt; Pentaho Analysis/Mondrian: Mature tool, Open Core, likes a fast DB underneath <br />
+&gt; Palo: Well regarded OLAP, nice options for Excel use, tightly integrated with suite<br />
+<br />
+<b>How do you bring it in?</b> <br />
+OK, with that out of the way, how can we bring open source into businesses that already have some sort of BI-DW infrastructure in place? One of the problems that open source faces is free licenses don't buy fast talking salespeople who'll come and woo senior managers and executives. So we often have to bring it in by the back door. You're not going to rip out the existing software and replace it with your new shiny open source alternative. You need to find pain points where the business is not getting what it needs but is blocked from getting something better, usually for political or financial reasons.<br />
+<br />
+<b>Typical pain points</b><br />
+Let's talk about some typical pain points. Is the main DW constantly overloaded by queries? Are some team's queries throttled because they're not considered important enough? Do you have an analysis team that is not allowed to run the complex queries that they'd like to? Do you have policy of killing queries that run over an certain time and it is killing a lot of queries? Does it take a *very* long time to produce the daily report burst? Has a certain team asked for Excel ODBC access to the DW and been blocked? Do some teams want to load their own data in the DW but are not allowed to? Do more people want access to ad-hoc reporting but you can't afford the licenses? Is your ETL development slow because you can't afford any more server licenses for your expensive tool? Are you still doing your ETL jobs as hand coded SQL?&nbsp; <br />
+<br />
+<b>Finally - the splistreaming strategy</b><br />
+If your company has more than 500 people I bet I could easily find at least 3 of those. These are the areas where you can implement open source first. You will be using a strategy that I call 'slipstreaming'. Have you ever watched the Tour De France on television? Did you notice that Lance Armstrong almost never rode at the front of the group? He always sat behind his team mates (in the slipstream) to conserve energy so he could attack at the end or breakaway on the climbs. Sitting behind his team reportedly saves 25% of his energy.<br />
+<br />
+<b>Open source as the 'domestique</b>'<br />
+The bad news: your open source efforts are not in Lance's position. You are going to be the team mate out in front cutting the wind (a domestique). You need to find a pain point where you can put the open source solution in front of the existing solution to 'cut the wind'. Essentially you are going to make the existing solution work better by taking some of the demand away. You will then present this as a 'business-as-usual' or 'tactical' solution to your problem. You need to be very careful to position the work correctly. You goal is to run this as a small project within your team. Be careful to keep the scope down. Talk about fire-fighting, taking the pressure off, etc. I'm sure you'll know how to position it in you company. You don't want project managers or architecture astronauts getting involved and making things complicated.<br />
+<br />
+How about some examples?<br />
+<br />
+<b>The data warehouse edge copy:</b><br />
+You have an Oracle based DW. It's been around for a few while and is suffering, despite hardware upgrades. The overnight load barely finishes by 8:30 and the daily report burst has been getting bigger and only finishes around 10:30 (sometimes 11). The customer insight team has been completely banned from running anything until the reports are out. They're not happy about starting their queries later and later. <br />
+<br />
+<b>Edge copy slipstream strategy</b><br />
+The slipstream solution to this is to add a edge copy of the DW between either the daily report run or the insight team. You should be able to make use of a reclaimed server (that the DW ran on previously) or you can purchase a "super PC" (basically a gaming machine with extra hard disks). The edge copy will run one of the analytic databases I mentioned. On an older machine I'd lean towards LucidDB or Infobright because of their compression. You then add a new step to the ETL that copies over just the changed data from the DW, or a time-limited subset, to the edge machine. Finally you switch them over to the edge copy. If your edge copy takes a while to load (for whatever reason) then talk to the insight team about running an extra day behind everyone else. You'll probably find that they're happy to run a day behind if they have a database to themselves, no restrictions.<br />
+<br />
+<b>The ETL co-worker:</b><br />
+You use Business Object's Data Integrator for your ETL processing. You've got a 4-core license and the word has come down that you are <b>not</b> getting any more. Your processing window is completely taken up with the exsiting run. ETL development has become a 1-in-1-out affair where new requests can only be delivered by killing something else. The DW devs have started using hand coded routines in the warehouse to deliver work that has political priority.<br />
+<br />
+<b>Co-worker slipstream strategy</b> <br />
+The slipstream solution to this is to add an open source ETL tool as a co-worker to the existing processing. The idea is to leave all of the existing processing on BODI but put new requests onto the new open source package. Again you need to identify either a older server that you can reclaim or source a super-PC to run on. Think carefully about the kind of work that can be best done on the co-worker process. Isolated processes are best. You can also do a lot of post loading activities like data cleanup and aggregations. Once you've established the co-worker as a valid and reliable ETL solution then you should aim to set a policy that any existing ETL processing that has to be changed is moved to the new tool at the same time.<br />
+<br />
+Be devious. Be political.&nbsp; But be nice.<br />
+Don't tell them, show them.<br />
+Ask forgiveness, not permission.<br />
+I wish you luck.

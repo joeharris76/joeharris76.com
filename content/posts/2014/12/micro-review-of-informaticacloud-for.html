@@ -1,0 +1,43 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-6329691001892410487",
+  "title": "Micro-review of InformaticaCloud for Amazon Redshift ",
+  "published": "2014-12-08T13:55:00.001-08:00",
+  "updated": "2014-12-08T13:57:22.023-08:00",
+  "labels": [],
+  "comments": [
+    {
+      "id": "2338594876754746498",
+      "author": "Divya van Mahajan",
+      "authorUrl": "https://www.blogger.com/profile/05507772040876609264",
+      "published": "2015-08-03T03:06:41.082-07:00",
+      "html": "Following your blog with interest. What is your current ETL for Redshift?"
+    }
+  ]
+}
+---
+I recently finished an evaluation of Informatica Cloud's platform as a candidate to take over our Redshift ETL workload.<br />
+<br />
+I'm posting this 'thumbnail' for the sake of my own memory as much anything else. :)<br />
+<br />
+TL;DR - It's very _close_ to being an ideal solution but, sadly, has some flaws we can't work around right now.<br />
+<br />
+Good:<br />
+<br />
+<ul>
+<li>Very straightforward agent based architecture. Very simple to install and consume.</li>
+<li>Reliably syncs/replicates *simple* data from source DBs via flat files and cleans up after itself.</li>
+<li>Performs simple and complex joins on the data source. This is a *major* weakness for competitors as they can't do this.</li>
+<li>All functionality is wizard driven and probably consumable by line of business users.</li>
+</ul>
+<br />
+<br />
+Bad:<br />
+<br />
+<ul>
+<li>Cannot create SQL based transforms without uploading PowerCenter mappings. This is too much to ask of LOB users.</li>
+<li>Extracts land as plain text on the agent host before gzipping. This is a *very* slow approach. They should pipe directly to gzip.</li>
+<li>Logging is *extremely* verbose. Every single row is written to the success or error. You'll quickly create many GB of logs.</li>
+<li>Upsert operations update *every* matching row in Redshift. This is handled as a delete plus and insert within Redshift, which means we then need a very slow vacuum to reclaim space.</li>
+<li>Finally, the deal breaker, cannot handle `timestamp with timezone` data types. In 2014. Redshift cannot handle these either but I need the ETL platform to be able to work with them.</li>
+</ul>

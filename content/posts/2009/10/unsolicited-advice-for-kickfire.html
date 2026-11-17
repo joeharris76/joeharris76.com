@@ -1,0 +1,52 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-4090469059329188565",
+  "title": "Unsolicited advice for Kickfire",
+  "published": "2009-10-25T03:12:00.000-07:00",
+  "updated": "2009-10-26T10:29:46.858-07:00",
+  "labels": [],
+  "comments": [
+    {
+      "id": "8744190282742960897",
+      "author": "Anonymous",
+      "published": "2009-10-26T15:34:51.449-07:00",
+      "html": "I agree that Kickfire needs to emphasize the FPGA aspect.    There is far too much FUD around the &quot;SQL Chip&quot;, which is really two or more FPGA chips which act as one unit.<br /><br />I also agree that there is far too much &#39;marketing speak&#39; aka hyperbole, than there is actual factual information.  I was trying to get more open information published through the Kickfire blog when I worked there.<br /><br />I disagree that Kickfire should look at Map/Reduce.  I think Kickfire could fit into a pluggable RDBMS Map/Reduce framework, if someone publishes such a thing into the open source market.<br /><br />I agree that Kickfire should be offered as a service.  In fact, you can try out Kickfire &#39;in the cloud&#39; using ondemand.Kickfire.com.  There is a prebuilt STAR schema to play with for up to two hours.<br /><br />Kickfire supports ODBC and JDBC.  You can use BI tools as long as they don&#39;t use features which Kickfire does not yet support, such as temporary tables or the GROUP_CONCAT function."
+    },
+    {
+      "id": "2799249178085655710",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2009-10-27T01:15:54.497-07:00",
+      "html": "Justin,<br /><br />Thanks for the comment.<br /><br />I didn&#39;t realise that they already offered an online trial. 2 hours using someone else&#39;s data doesn&#39;t seem like enough though.<br /><br /><br />Joe"
+    },
+    {
+      "id": "338957033659577083",
+      "author": "Anonymous",
+      "authorUrl": "https://www.blogger.com/profile/17294311263645885655",
+      "published": "2009-10-27T21:01:35.770-07:00",
+      "html": "&quot;I should point out that I have little experience with MySQL, no experience with Kickfire and I&#39;m not a marketer&quot;<br /><br />Of course in my case I _dont_ play one on TV either :) Really good post Joe - Besides the FPGA business, I would just point one single thing about KF: they have bet the farm on MySQL. That&#39;s a lot of eggs in Larry&#39;s basket. In the words of Gump, that&#39;s all I gotta say about that :)<br /><br />Yours in BI<br />J."
+    },
+    {
+      "id": "5300160429095627076",
+      "author": "Anonymous",
+      "published": "2009-10-28T06:34:51.776-07:00",
+      "html": "Couldn&#39;t agree more about re-positioning the SQL Chip as an FPGA and better explaining the advantages of the FPGA including the recent advancements. I am wondering how long it will be before more DBMS vendors consider implementing these in their systems and if it makes sense for them to re-engineer in order to do so."
+    },
+    {
+      "id": "1434752452756546276",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2009-10-29T13:32:23.222-07:00",
+      "html": "Jerome,<br /><br />Thanks for the comment. They definitely have bet the farm on MySQL and yet they don&#39;t gain the benefit that Infobright and InfiniDB do, namely instant use. I can only guess that they saved a huge amount of engineering effort by developing Kickfire as a MySQL storage engine rather than a &quot;full&quot; DB from the ground up.<br /><br />&#39;Id&#39;,<br /><br />I&#39;m not sure when we&#39;ll see more. Kickfire has applied for a number of strong patents. If these patents are successful and they do not change their approach then we may well see an acquisition of them for their IP.<br /><br /><br />Joe"
+    },
+    {
+      "id": "1664389145228471728",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2010-11-18T02:47:54.198-08:00",
+      "html": "Latecomers to this post may be interested to note that Kickfire was acquired by Teradata in August 2010 for an undisclosed fee (i.e. not much).<br />Their database product was immediately retired and the acquisition was referred to as an &#39;IP deal&#39; by Teradata. http://www.cio.com.au/article/356508/teradata_quietly_scoops_up_kickfire/"
+    }
+  ]
+}
+---
+<div>Following up on the Kickfire BBBT tweetstream on Friday (23-Oct), I want to lay out my thoughts about Kickfire's positioning. I should point out that I have little experience with MySQL, no experience with Kickfire and I'm not a marketer ( but I play one on TV… ;) ).</div><div><div><br /></div><div>Kickfire should consider doing the following:</div><div><br /></div><div><b>1. Emphasise the benefits of the FPGA</b></div><div>We now know that Kickfire's "SQL chip" is in fact an FPGA. Great! They need to bring this out in the open and even emphasise it. This is actually a strength, FPGA's have seen major advances recently and a good argument can be made that they are not "propietary hardware" but a commodity component advancing at Moore's Law speed (or better).</div><div>They should also obtain publishing rights to <a href="http://tr.im/D5xH">recent research about the speed advantages of executing SQL logic on an FPGA</a>. Good research foundations and advances in FPGAs make Kickfire seem much more viable longterm. </div><div><br /></div><div><b>2. Pull back on the hyperbole.</b></div><div>Dump the P&amp;G style 'Boswelox' overstatement. A lot of the key phrases in their copy seem tired. How many time have we heard about "revolutionary" advances? My suggestion is to use more concrete statements. Example: "Crunch a 100 million web log records  in under a minute". Focus on common tasks and provide concrete examples of improved performance.</div><div>Also, reign in the buzzwords: availability, scalability, sustainability, etc. If this is really for smaller shops and data marts then <b>plain english is paramount</b>. "Data mart" type customers will have to ram this down the throat of IT. They need to want it more than an iPhone or they'll just give up and go with the default.</div><div><br /></div><div><b>3. Come up with a MapReduce story.</b></div><div>MapReduce is the new darling of the web industry. Google invented the term, Yahoo has released the main open source project and everyone just thinks it's yummy. Is it a mainstream practice? Probably not, but the bastion of MySQL is not mainstream either. </div><div>Kickfire's "natural" customers (e.g. web companies) may not have any experience with data warehousing. When they hit scaling issues with MySQL they may not go looking for a better MySQL. Even if they do they'll probably find and try Infobright in the first instance.</div><div>Kickfire needs a story about MapReduce and they need to insert themselves into the MapReduce dialogue. They need to start talking about things like "The power of MapReduce in a 4U server" or "Accelerating Hadoop with Kickfire". </div><div><br /></div><div><b>4. Offer Kickfire as a service.</b></div><div>Kickfire needs to be available as a service. This may be a complete pain in the ass to do and it may seem like a distraction. I bet Kickfire policy is to offer free POCs. But IMHO their prices are too low to make this scalable. </div><div>Customers need to be able to try the product out for a small project or even some weekend analysis. When they get a taste of the amazing performance then they'll be fired up to get Kickfire onsite and willing to jump through the hoops in IT.</div><div>If this is absolutely out of the question, the bargain basement approach would be to put up a publicly accessible system (registration required) filled with everything from data.gov. Stick Pentaho/Jasper on top (nice PR for the partner…) and let people play around.</div><div><br /></div><div><b>5. Deliver code compatibility with Oracle and SQL Server.</b></div><div>There are probably compelling reasons the choice of MySQL. However, many potential customers have never used it. They've never come across it in a previous role. It's not used anywhere in their company. Frankly, it makes them nervous. </div><div>Kickfire needs to maximise their code compatibility with Oracle and SQL Server and then they need to talk about it everywhere.</div><div><br /></div><div>That is all. Comments?</div><div><br /></div><div><br /></div></div>

@@ -1,0 +1,91 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-5544105453172570915",
+  "title": "The trouble with SaaS BI - it's all about the data",
+  "published": "2010-10-05T02:53:00.000-07:00",
+  "updated": "2010-10-05T02:54:18.491-07:00",
+  "labels": [
+    "api",
+    "bi",
+    "dw",
+    "etl",
+    "results",
+    "saas"
+  ],
+  "comments": [
+    {
+      "id": "3698761742474127769",
+      "author": "Anonymous",
+      "published": "2010-10-05T14:26:23.322-07:00",
+      "html": "Agree totally.<br /><br />Note how even from this vantage point, you still fell into a trap, near the end you pointed out that &quot;online&quot; applications all have open APIs for accessing the data, and....<br />the trap is that&#39;s only *access* to data so it doesn&#39;t give you the meaning of the data, guidance on proper interpretation/rationalization of that data. True the models in these modern SaaS based apps are likely to be cleaner than older legacy stuff, but that&#39;s not the same as them being &quot;pre-integrated&quot; and ready for BI. You still need to create a DW from these, rationalize across them, etc. So not such a holy grail. <br /><br />We all seem to fall into this trap occasionally. I&#39;ve made this mistake - e.g., assuming Netsuite would be easy just because they have JDBC/ODBC. A few hours later I said &quot;oh yeah, Netsuite is a big hairy rich ERP system with customizations&quot;. The ODBC/JDBC helps, hey it&#39;s way better than having to use ABAP in SAP to get at the data, but it&#39;s just the access layer. There&#39;s still the whole usage issue, not to mention ERP-customizations to deal with.<br /><br />Regardless of that overall I couldn&#39;t agree more that the data is the problem. My company is founded on this principle. We do BI solutions - the data integration/rationalization, the DW, and the whole analytical application on top. (www.oco-inc.com) I no longer see how projects succeed that don&#39;t do it this way. <br /><br />Anyway, thanks for hammering on this point - great post.<br /><br />mike beckerle<br />CTO Oco"
+    },
+    {
+      "id": "8616461012897813604",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2010-10-06T01:23:47.046-07:00",
+      "html": "Mike,<br /><br />Yep, I hear you. I&#39;m not really saying it&#39;s easy though. I know from painful experience just how hard it is to create a data warehouse from web APIs that are designed for programmatic OLTP style actions.<br /><br />I was trying (and possibly failing) to point out that these online applications are the same for everyone. That means that we (as an industry) can start doing more upfront and start to make a real dent in that 90% for the first time.<br /><br />It&#39;s probably worth pointing out that I&#39;m mainly thinking of smaller businesses in this post. They&#39;re is essentially no such thing as BI in small businesses because the upfront invest isn&#39;t justified.<br /><br />All that said, I&#39;d love to hear about how you get on-premise SAP integrated into a SaaS BI solution. SAP customisation is a killer.<br /><br /><br />Joe"
+    },
+    {
+      "id": "217375490979614627",
+      "author": "Elad Israeli",
+      "authorUrl": "https://www.blogger.com/profile/14039349385755633029",
+      "published": "2010-12-10T15:34:32.132-08:00",
+      "html": "Interesting read, Joe.  It really is all about the data.<br /><br />I am founder and CEO of a business intelligence platform company (SiSense) and it is unbelievable how much hype there is over this SaaS BI concept while we never encounter these guys in deals (and we sell to both large corps and small startups).<br /><br />We are VC backed and they have constantly been on my butt regarding going cloud, even though most cloud BI vendors have either died (LucidEra) or dying (won&#39;t mention any names here).<br /><br />Until all business data runs on the cloud, having BI run in the cloud adds more complexity to an already complex enough process.<br /><br />I actually wrote about this recently, if you&#39;re interested:  http://tinyurl.com/29oyrue<br /><br />Regards,<br />Elad Israeli<br />Co-Founder, CEO<br />SiSense"
+    },
+    {
+      "id": "1318536251146821502",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2010-12-11T01:52:36.212-08:00",
+      "html": "Elad,<br /><br />Thanks for the comment. I half-agree with your view that &quot;having BI run in the cloud adds more complexity&quot;. However, a lot of data is already on the cloud (especially for smaller businesses). I think it&#39;s perfectly reasonable to have a cloud BI offering that only supports cloud data (I may be in a minority there).<br /><br />I think *everything* will go to the cloud just as surely as factories got rid of their &quot;engine rooms&quot; and converted to electricity. It&#39;s a question of timing though and companies who want to bridge that change need to have a foot in the cloud camp. How large that &quot;foot&quot; is will depend on the size of the target customers, with bigger customers dictating a smaller emphasis on cloud.<br /><br />Regarding SiSense itself I have some concerns about your market positioning. It reminds me a little too much of Algebraix (http://www.algebraixdata.com/), who have not exactly set the world on fire. <br /><br />The talk of &quot;no need for a DW&quot; worries me. As I mention above &quot;the *real* purpose of a data warehouse is to organize and preserve the data somewhere safe&quot;. It&#39;s a central resource that can be accessed by  different end users that may be using Excel or SAS instead of the companies BI tool. Once I get my data into SiSense, how else can I access it?  In my experience, good Excel integration is the minimum bar for a successful BI implementation. <br /><br />Positioning SiSense as a &quot;unified BI solution&quot; may appeal to some customers but we live in an incremental world. Few customers will be able to completely embrace a new solution in one swoop. Fewer still will have BI/Analysis needs that are completely served  by one vendors product. I would like to see a lot more discussion on your site about how your product integrates with the other pieces of the puzzle.<br /><br />Finally, I wish you every success. Must BI software is needlessly complicated and a fresh approach is clearly needed.<br /><br /><br />Joe"
+    },
+    {
+      "id": "4216572792343498388",
+      "author": "Elad Israeli",
+      "authorUrl": "https://www.blogger.com/profile/07558330790219988349",
+      "published": "2010-12-11T08:43:56.749-08:00",
+      "html": "Joe,<br /><br />Thanks for your input.<br /><br />ElastiCube IS a data warehouse.  It&#39;s just a data warehouse software appliance that does not require restructuring for the benefit of query performance.  If you have an existing DW, you can use it.  If you don&#39;t, you have ElastiCube.<br /><br />Regarding Algebraix - they seem to be a database vendor to me.  SiSense&#39;s entire offering is codeless BI development that includes a database but also a very powerful analytics/reporting frontend.  We&#39;re getting 2 new customers per week and our list is growing nicely.  So I guess for the time being, I am more optimistic than you are about our positioning :)<br /><br />Thanks again,<br />Elad"
+    },
+    {
+      "id": "7050619352711204807",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2010-12-12T01:14:43.002-08:00",
+      "html": "Elad,<br /><br />Great! I&#39;m glad you&#39;re doing well. <br /><br />Even if you disagree with everything else I said (which is entirely reasonable!) please, please, please add something to your marketing about Excel integration. <br /><br />Even if it&#39;s just a detailed explanation of why you make it unnecessary! Excel is a big check box on many customer&#39;s short list criteria.<br /><br /><br />Joe"
+    },
+    {
+      "id": "5737851322332481202",
+      "author": "Elad Israeli",
+      "authorUrl": "https://www.blogger.com/profile/14039349385755633029",
+      "published": "2010-12-12T18:46:39.497-08:00",
+      "html": "Haha, fair enough Joe. :-)<br /><br />Thanks"
+    }
+  ]
+}
+---
+&nbsp;&nbsp;&nbsp; Some data was released yesterday that purports to show that SaaS BI customer's are very pleased with it's ease of use, etc., etc. Boring. Seriously, I really like the idea of SaaS BI but I haven't seen anyone making great leaps forward. I'd say that they *can't* take us forward because of the box that they've painted themselves into. The box actually has a name: it's called BI.<br />
+<br />
+<br />
+<b>The BI sandbox</b> <br />
+&nbsp;&nbsp;&nbsp; Eh? What? Here's the thing; BI as we currently know it is the last stage in the information pipeline. It's the beautiful colours on the box that holds the cereal. But it's not the cereal and it's not even the box. It is *very* important (who would buy cereal in a plain cardboard box?) but is also *very* dependent on other elements in the pipeline. <br />
+&nbsp;&nbsp;&nbsp; I don't want to get into a long discussion about definitions of BI. Suffice it to say this: why are terms like 'data warehouse' and 'OLAP cube' still prevalent? Simply because BI does not imply data gathering, preparation and storage. Last example on this theme. If I tell you I'm a Business Intelligence manager, what would you guess is my remit? Does it include the entire data warehouse? The OLAP cubes? All of the ETL processing? No? It could but it rarely does.<br />
+<br />
+<b>It's all about the data</b> <br />
+&nbsp;&nbsp;&nbsp; I once worked for a clever chap who's mantra was "it's all about the data". His daily struggle was to get the business to invest more time, effort and money into the data itself. It was a hard fight. We had a very fast data warehouse (NZ) and some perfectly serviceable BI software (BO) and nearly a dozen newly minted graduates to turn out our reports. What we did not have was a strong mandate to get the data itself absolutely sorted, to get every term clearly defined and to remove all of the wiggle room from the data. As a consequence we had the same problems that so many BI teams have. Conflicting numbers, conflicting metrics, and political battles using our data as ammunition.<br />
+<br />
+<b>Data is the 'other' 90% </b><br />
+&nbsp;&nbsp;&nbsp; I'd estimate that gathering, preparing, and storing the data for BI represents at least 90% of the total effort, with analysis and presentation being the last 10%. I really hope no one is surprised by that figure. I'd think that figure is consistent for any situation in which decisions need to be made from data. For instance a scientist in a lab would have to spend a lot of time collecting and collating measurements before she could do the final work of analyzing the results. A research doctor conducting a study will have to collect, organize and standardize all of the results study data before he can begin to evaluate the outcome.<br />
+<br />
+<br />
+<b>It's NOT about speed</b> <br />
+&nbsp;&nbsp;&nbsp; One of the tragedies of the Inmon-Kimball data warehouse definition war is the data warehouse has been conceived as something that you create because you want to speed up your data access. It's implied that we'd prefer to leave the data in it's original systems if we could, but alas that would be too slow to do anything with. What a load of tosh! Anyone who's been in the trenches knows that the *real* purpose of a data warehouse is to organize and preserve the data somewhere safe away from the many delete-ers and archive-ers of the IT world. We value the data for it's own sake and believe it deserves the respect of being properly stored and treated. <br />
+<br />
+<b>Nibbling at the edges</b> <br />
+&nbsp;&nbsp;&nbsp; So, back to the topic, how does SaaS BI help with this issue?&nbsp; Let's assume that SaaS BI does what it claims and makes it much easier for "users" to produce reporting and analysis. Great, how much effort have we saved? Even if it takes half as much time and effort we've only knocked 5% off our total.<br />
+<br />
+<b>The real opportunity</b> <br />
+&nbsp;&nbsp; And finally I come to my point: the great untapped opportunity for the SaaS [BI-DW-OLAP-ETL] acronym feast is the other 90% where the most of the hard work happens. Customers are increasingly using online applications in place of their old in-house apps. Everything from ERP to Invoicing to call centre IVRs and diallers are moving to a SaaS model. And every SaaS service that's worth it's salt offers an open API for accessing the data that they hold.<br />
+<br />
+<b>The holy grail - instant data</b><br />
+&nbsp;&nbsp;&nbsp; This is the mother-load, the shining path for data people. Imagine an end to custom integrations for each customer. Imagine an end to customers having to configure they're own ETL and design their own data warehouse before they can actually do anything with their data. The customer simply signs up to the service and you instantly present them with ready to use data. Magic. Sounds like a service worth paying for.

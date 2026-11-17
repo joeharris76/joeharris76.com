@@ -1,0 +1,100 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-8001866520759372455",
+  "title": "Comment regarding Infobright's performance problems",
+  "published": "2010-12-09T03:47:00.000-08:00",
+  "updated": "2010-12-15T12:55:36.718-08:00",
+  "labels": [
+    "bi",
+    "columnar",
+    "database",
+    "dw",
+    "open-source",
+    "sql"
+  ],
+  "comments": [
+    {
+      "id": "5047628331107158049",
+      "author": "Unknown",
+      "authorUrl": "https://www.blogger.com/profile/15553102810555348205",
+      "published": "2010-12-14T14:56:19.719-08:00",
+      "html": "Hey Joe,<br /><br />Firstly, let me take back the comment you threw back at me -- completely agree, and I misspoke.  My intention was to say that companies use their (raw) data to create aggregates (through BI tools, etc.)  Upon re-reading my post, I admit my mistake on the reply.<br /><br />Secondly, I always agree that one should call a spade a spade.  Infobright is truly designed to perform with &quot;denormalized&quot; data.  Joins and star-schemas just aren&#39;t in our wheelhouse.  Reason: when you join tables, you automatically remove most of the &quot;high performance&quot; improvements introduced by the knowledge grid.  Instead of using joins, one should use nested selects; better yet, one should consider combining all their data into one table.  With all that compression, you really have nothing to lose and everything to gain.  In addition, Infobright&#39;s knowledge grid is there to reduce the amount of I/O required.  If you&#39;re doing full table scans, you don&#39;t reduce your I/O.  In that case, Infobright is not your solution if you focus on table scans.  <br /><br />I&#39;m always open to recognize/tackle a performance issue; we do receive forum posts and file bugs to help with those issues.  Many times, though, the issue is with how the person approaches the problem with a selected solution.  That&#39;s why I&#39;m here -- helping community members get Infobright rockin&#39; on their system.<br /><br />I&#39;m a firm believer in open, candid discussion.  If there are certain instances that fail your sniff test, send them my way; I&#39;d love to tackle them with you.  If you&#39;re looking for ways to improve query performance, take a look at our community forum (http://www.infobright.org/Forums).  There are tips and tricks and other forum posts on this topic.  In fact, if you paste your query/ddl in a forum post, most often we provide suggestions to improve execution times.  <br /><br />Finally, most issues regarding performance are directly tied to education.  While ICE 3.5 and other upcoming versions will have improved performance, we still will provide the same insight/recommendations regarding queries/ddl as we do today.  I&#39;d love to find awesome/innovative ways to better inform our users on how to improve performance.  If you have suggestions, I&#39;m all ears.<br /><br />Cheers, and I look forward to your response.<br /><br />Jeff Kibler<br />Infobright Community Manager<br />Skype: jeff.at.infobright<br />E-mail: jeff@infobright.com"
+    },
+    {
+      "id": "4792485465526861985",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2010-12-15T12:50:42.184-08:00",
+      "html": "Thanks for the reply, Jeff.<br /><br />Your comment that &quot;joins and star-schemas just aren&#39;t in our wheelhouse&quot; really threw me for a loop.  I&#39;ve honestly never considered a completely denormalised (i.e. flat) schema in a SQL database.  I guess I&#39;m a lot more indoctrinated in 3NF and normalisation than I realised.  This really changes my perspective on Infobright and what problems it&#39;s useful for.<br /><br />Thinking about a flat schema takes me back to my Excel days when I used to create Pivot Tables over very wide and sparse spreadsheets (and curse Microsoft for the Excel &#39;95 row limit!).  I can see how this is useful in quite a few cases, especially for data mart style deployments where people want to slice and dice against a fixed (or intermittently updated) data set. <br /><br />With this new perspective I&#39;m thinking of Infobright as a very flexible OLAP platform that can be managed with standard SQL tools.  Throughout years of creating Analysis Services cubes in the tortuous SSAS GUI, I&#39;ve wished I could manage cubes using SQL.  I&#39;m now thinking of Infobright as an alternative to products like PowerPivot, SSAS and Essbase, rather than a competitor to &quot;general purpose&quot; Analytic Databases such as VectorWise, Sybase IQ, etc.  In this context Infobright&#39;s approach, features and limitations make a lot more sense.  <br /><br />It also explains the SSB results; I don&#39;t expect to join across cubes the way that I join tables in a database but I do expect to ask separate questions and align the summarised results; which is presumably what Infobright&#39;s join mechanism is doing (and why some of the SSB queries are slow).  In other words, if someone created cubes out of the SSB benchmark tables (cube per table), and then showed me a benchmark that was very slow on joining them together, I would say they&#39;re an idiot rather than the cube platform was crap.<br /><br />All of this raises questions about the Infobright marketing to date though.  I&#39;ve invested quite a bit of time in Infobright, I&#39;ve read many articles about it, downloaded numerous versions and evaluated it for a project I&#39;m (still) working on.  I never got the message about no joins and OLAP style use.  Maybe that&#39;s because I&#39;m entirely  stupid (it&#39;s possible…) however it&#39;s not just me who&#39;s making this mistake. If people really understood this they wouldn&#39;t even include Infobright in SSB benchmark roundups (right?!).  Instead they&#39;d be comparing it to SSAS and Palo and talking about how simple it is to load manage an Infobright &quot;cube&quot; using SQL or PDI.<br /><br />So I guess you guys need to tighten up the message about what *exactly* Infobright is for.  I understand that OLAP isn&#39;t a fashionable acronym these days but you need to get the message across that Infobright is *purely* for analysis / slice-and-dice of denormalised data; it&#39;s not for EDWs, star schemas, ELT processing, etc.<br /><br />Future possibilities: I&#39;m not a big fan of MDX but it is the lingua franca of OLAP and I think you need a better way to ensure that Infobright uses it properly.  Perhaps you could create an Infobright-specific version of Mondrian because AFAIK Mondrian expects to do a lot of joining and use summary tables. I&#39;m guessing it would mostly be a case of taking stuff out of Mondrian until all that&#39;s left is MDX&lt;=&gt;SQL translation.<br /><br />Thanks again for the response. I&#39;m pretty excited about using Infobright again; I think I&#39;ll get a lot more out of it just from having a different set of expectations.<br /><br /><br />Joe"
+    },
+    {
+      "id": "6218746790286308437",
+      "author": "Tom Barber",
+      "authorUrl": "https://www.blogger.com/profile/01235592103851265420",
+      "published": "2010-12-15T13:01:21.019-08:00",
+      "html": "Interesting reading indeed. Just to expand on the mondrian thing a bit, the SSB from my time implementing cubes has always been reasonably close to the case though. As an integrator we were always told that having 1 large fact table was never good for performance, due to the fact that mondrian would have to do a select distinct across the whole fact table dimension columns to ascertain what the dimension values were as opposed to just retrieving the values from a dimension table.<br /><br />Very interested to learn more though.<br /><br />Tom"
+    },
+    {
+      "id": "6626241307326609120",
+      "author": "Tom Barber",
+      "authorUrl": "https://www.blogger.com/profile/01235592103851265420",
+      "published": "2010-12-15T13:12:41.553-08:00",
+      "html": "Actually, an email just went through my inbox which jogged my memory. To further my point above....<br /><br />The Mondrian developers are implementing the SSB benchmark and queries into the test suite for mondrian... so if its that bad a test, why are they doing it? :)"
+    },
+    {
+      "id": "219427124126438888",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2010-12-15T13:38:30.232-08:00",
+      "html": "Tom,<br /><br />You&#39;re right, we create a set of Dimensions and Facts, each being a separate table and then load the cube from there. As far as I understand it, traditional OLAP cubes (i.e. non-Mondrian) once loaded are more like a collection of flat files at varying levels of aggregation that the engine picks from to provide the results.<br /><br />It&#39;s kind of hard to imagine but you could push the dimensions into the fact table. After all they can&#39;t logically be at a lower grain than the Fact. Maybe do it in Kettle on the fly as rows get pushed into the bulk loader. You&#39;d could look at that process as being the &quot;cube load&quot;. <br /><br />If I&#39;ve understood Jeff correctly (always questionable…) then Infobright should be able to do distincts and aggregates *very* cheaply. (Does that tally with your testing?) I understand completely why Mondrian would add SSB as a test. Mondrian is set up to work with lots of separate tables. I&#39;ve haven&#39;t tried Mondrian with Infobright but I&#39;m guessing it has the same problems it showed in the SSB.<br /><br />That said, I&#39;m guessing that Mondrian could be optimised to work with Infobright. At the very least they could take the MDX to SQL parsing and offer that as a standalone product.<br /><br /><br />Joe"
+    },
+    {
+      "id": "2758129671749964899",
+      "author": "jeff",
+      "authorUrl": "https://www.blogger.com/profile/18030766079695651953",
+      "published": "2010-12-20T08:01:08.282-08:00",
+      "html": "Hi Joe,<br /><br />Sorry for the delay in my response!  I appreciate the opportunity to help clear up the waters.  <br /><br />Infobright is geared towards analyzing extremely voluminous machine-generated data.  The flat, amorphous nature of MGD fits well with the optimal denormalized structure.  Plus, since MGD rarely (if ever) gets updated, then one-off update statements will hardly (if ever) be used<br /><br />As you mentioned, Infobright does analytics/aggregates very easily.  You really see dramatic performance improvements when you eliminate large data sets in the query execution plan (ex: sum(revenue) .. where cola = blah and colb &lt; bleh.)  We shine in these occurrences because we eliminate a lot of I/O. <br /><br />Note, though, that we are continuing to improve on our joins.  In fact, our upcoming release will see some improvement in this area.  <br /><br />Cheers,<br /><br />Jeff"
+    }
+  ]
+}
+---
+<b>UPDATE: This is a classic case of the comments being better than the post; make sure you read them! In summary, Jeff explained better and a lightbulb went off for me: Infobright is for OLAP in the classical sense with the huge advantage of being managed with a SQL interface. Cool.</b><br />
+<br />
+I made a comment over on Tom Barber's blog post about a Columnar DB benchmarking exercise:&nbsp;http://pentahomusings.blogspot.com/2010/12/my-very-dodgy-col-store-database.html<br />
+<br />
+<br />
+Jeff Kibler said...<br />
+Tom –<br />
+<br />
+Thanks for diving in! As indicated in your results, I believe your tests cater well to databases designed for star-schemas and full table-scan queries. Because a few of the benchmarked databases are engineered specifically for table scans, I would anticipate their lower query execution time. However, in analytics, companies overwhelmingly use aggregates, especially in ad-hoc fashion. Plus, they often go much higher than 90 gigs.<br />
+<br />
+That said, Infobright caters to the full fledged analytic. As needed by the standard ad-hoc analytic query, Infobright uses software intelligence to drastically reduce the required query I/O. With denormalization and a larger data set, Infobright will show its dominance.<br />
+<br />
+Cheers,<br />
+<br />
+Jeff<br />
+Infobright Community Manager<br />
+8 December 2010 17:04<br />
+<br />
+<br />
+Joe Harris said...<br />
+Tom,<br />
+<br />
+Awesome work, this is the first benchmark I've seen for VectorWise and it does look very good. Although, I'm actually surprised how close InfiniDB and LucidDB are, based on all the VW hype.<br />
+<br />
+NFS on Dell Equilogic though? I always cringe when I see a database living on a SAN. So much potential for trouble (and really, really slow I/O).<br />
+<br />
+<br />
+Jeff,<br />
+<br />
+I have to say that your comment is off base. I'm glad that Infobright has a community manager who's speaking for them but this comment is *not* helping.<br />
+<br />
+First, your statement that "in analytics, companies overwhelmingly use aggregates" is plain wrong. We use aggregates as a fallback when absolutely necessary. Aggregates are a maintenance nightmare and introduce a huge "average of an average" issue that is difficult to work around. I'm sure I remember reading some Infobright PR about removing the need for aggregate tables.<br />
+<br />
+Second, you guys have a very real performance problem with certain types of queries that should be straightforward. Just looking at it prima facie it seems that Infobright starts to struggle as soon as we introduce multiple joins and string or range predicates. The irony of the poor Infobright performance is that your compression is so good that the data could *almost* fit in RAM.<br />
+<br />
+What I'd like to see from Infobright is: 1) a recognition of the issue as being real. 2) An explanation of why Infobright is not as fast in these circumstances. 3) An explanation of how to rewrite the queries to get better performance (if possible). 4) A statement about how Infobright is going to address the issues and when.<br />
+<br />
+I like Infobright; I like MySQL; I'm an open source fan; I want you to succeed. The Star Schema Benchmark is not going away, Infobright needs to have a better response to it.<br />
+<br />
+Joe

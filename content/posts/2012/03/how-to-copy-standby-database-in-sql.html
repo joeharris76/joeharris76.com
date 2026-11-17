@@ -1,0 +1,192 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-8072128599889388346",
+  "title": "How To Copy A Standby Database in SQL Server",
+  "published": "2012-03-08T09:19:00.000-08:00",
+  "updated": "2014-01-23T06:19:49.295-08:00",
+  "labels": [],
+  "comments": [
+    {
+      "id": "7113319512997741292",
+      "author": "Anonymous",
+      "published": "2012-05-14T14:07:07.637-07:00",
+      "html": "Great stuff"
+    },
+    {
+      "id": "7663719908124217439",
+      "author": "Leeway",
+      "authorUrl": "https://www.blogger.com/profile/05160774085328608214",
+      "published": "2012-12-03T10:02:22.002-08:00",
+      "html": "Nice to see many posts on Big Data.<br /><br />I recently came to know about Pastream. I am trying to make some reports in Tableau on Parstream.<br /><br />It seems there is no separate ODBC driver. They are using Postgre SQL odbc driver. Any idea?<br /><br />Please share your thoughts.<br /><br />Best Regards<br />Gowtham"
+    },
+    {
+      "id": "946861922917006436",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2012-12-03T12:52:17.273-08:00",
+      "html": "Sorry Gowtham, no idea I&#39;m afraid. Never had an opportunity to put ParStream to the test (yet…)."
+    },
+    {
+      "id": "4583042558837632104",
+      "author": "Reinis",
+      "published": "2013-05-01T07:24:32.343-07:00",
+      "html": "Thank you for this.  This is a thorny little problem and your solution worked great.  Keep up the good work."
+    },
+    {
+      "id": "6449030462920867990",
+      "author": "Anonymous",
+      "published": "2013-10-26T09:03:09.040-07:00",
+      "html": "Thanks, your post did job for me.<br />All the best from Poland.<br /><br />Marcin"
+    },
+    {
+      "id": "7435796601029127390",
+      "author": "Anonymous",
+      "published": "2014-01-23T06:06:08.165-08:00",
+      "html": "Thanks, very useful.<br />Step 11 though should say the following I thing: <br /><br />ALTER DATABASE MyStandbyDb SET ONLINE; "
+    },
+    {
+      "id": "4741550427990974361",
+      "author": "joeharris76",
+      "authorUrl": "https://www.blogger.com/profile/09242541409318280541",
+      "published": "2014-01-23T06:20:57.818-08:00",
+      "html": "Fixed! Thanks. :)"
+    },
+    {
+      "id": "7268362692618480722",
+      "author": "Anonymous",
+      "published": "2014-01-23T08:42:18.165-08:00",
+      "html": "Depending on the Windows account used to run SQL Server there can be problems when attempting step 9 (i.e. to bring the new Dev DB back online).  You get error code 5, which means &quot;access denied&quot;.  This is because it can be that the SQL Server user does not have read/write privileges for the new mdf and ldf files.  This is caused by step 8.  The copy command just gives the target files default security settings.  Not sure what the best solution is here, but I&#39;ve used xcopy /O"
+    },
+    {
+      "id": "8065098662751333708",
+      "author": "Anonymous",
+      "published": "2014-01-23T08:45:02.427-08:00",
+      "html": "If you want to run this process repeatedly, you need to take a copy of the standby file from the source database before performing step 10.  Step 10 will delete this file.  Then following step 10 simply copy or move the standby file back into place and your source database is still in good shape."
+    },
+    {
+      "id": "9176153550104422252",
+      "author": "Anonymous",
+      "published": "2015-07-02T06:40:28.136-07:00",
+      "html": "Has anyone had any issues with the .tuf undo file when running through this procedure? When I RESTORE the target DB for normal usage RESTORE DATABASE MyNewDevDb WITH RECOVERY; then the StandBy DB&#39;s .tuf file is deleted which prevents me completeing Step 11 i.e. Taking the Standby DB back online ALTER DATABASE MyStandbyDb SET ONLINE; as I receive an error message stating that the .tuf file is missing. I tried backing up the .tuf file in a separate directory and then pasting back afterwards which works but it&#39;s problematic. Thanks in advance"
+    }
+  ]
+}
+---
+I ran across a SQL Server problem today where my Standby database was detached and would not re-attach.&nbsp;This problem originally arose because I wanted to make a development copy of log shipping standby database with restarting the log chain from a full backup.<br />
+<br />
+I couldn’t find a complete solution  online so I thought I’d share my solution here. A tip ‘o the hat to Paul Randal for his <a href="http://sqlskills.com/BLOGS/PAUL/post/Disaster-recovery-101-hack-attach-a-damaged-database.aspx">“Hack attach a damaged database” post</a> which got me going in the right direction.<br />
+<h3 id="the_problem">
+
+
+
+
+
+</h3>
+<h3 id="the_problem">
+
+
+
+
+
+
+The Problem</h3>
+I have a log shipping setup whereby the reporting database is kept in Standby mode. I wanted to make an up-to-date copy for a developer to use. So I (foolishly as it happens) tried to simply detach the standby database and make a copy of it. <br />
+When I finished copying it and tried to re-attach it I got the error “Cannot attach a database that was being restored.” <strong>Uh-oh</strong>, this database is on the end of a very long log shipping chain and, although I haven’t <em>really</em> lost anything, rebuilding the chain is going to cost me a <strong>lot</strong> of time.<br />
+Plus, I <em>really</em> need to make new development copies of the standby database quickly and often. <strong><em>This is not a one time process.</em></strong>  <br />
+<h3 id="how_to_copy_a_log_shipping_standby">
+
+
+
+
+
+</h3>
+<h3 id="how_to_copy_a_log_shipping_standby">
+
+
+
+
+
+
+How To Copy A Log Shipping Standby</h3>
+This may not be ‘the right way’ but it works and <em>forget about detaching the DB</em> that is definitely the <em>wrong</em> way to go, although you can recover from it using a variant of this process.<br />
+<ol>
+<li>Take the standby DB offline (SQL)<br />
+
+
+<code style="background-color: #444444;">ALTER DATABASE MyStandbyDb SET OFFLINE;</code></li>
+<li>Create a ‘shell’ DB that will become the new target DB (SQL) <br />
+<em>NOTE: that the internal ‘name’ values must match the Standby DB</em>  <br />
+
+
+<span style="background-color: #444444;"><code>CREATE DATABASE MyNewDevDb ON PRIMARY</code> <br />
+<code>( NAME = 'MyLiveDb', --!!! Must match the Live &amp; Standby name</code> <br />
+<code>FILENAME = 'C:\My\Data\Path\MyNewDevDb.mdf' ,</code> <br />
+<code>SIZE = 3072KB , FILEGROWTH = 1024KB )</code> <br />
+<code>LOG ON</code> <br />
+<code>( NAME = 'MyLiveDb_log', --!!! Must match the Live &amp; Standby name</code> <br />
+<code>FILENAME = 'C:\My\Data\Path\MyNewDevDb_log.ldf' ,</code> <br />
+<code>SIZE = 1024KB , FILEGROWTH = 10%) ;</code></span>  </li>
+<li><em>(OPTIONAL)</em> Apply TDE encryption to the target DB (SQL)  <br />
+
+
+<code style="background-color: #444444;">ALTER DATABASE MyNewDevDb SET ENCRYPTION ON;</code>  </li>
+<li>Backup the target DB (SQL)<br />
+
+
+<code style="background-color: #444444;">BACKUP DATABASE MyNewDevDb to disk = 'C:\My\Backup\Path\shell.bak' WITH FORMAT;</code>  </li>
+<li>Restore the target backup in standby mode (SQL)
+<em>NOTE: The shell DB must match the state of the DB we want to replace it with</em><br />
+
+
+<span style="background-color: #444444;"><code>RESTORE DATABASE MyNewDevDb</code> <br />
+<code>FROM DISK = N'C:\My\Backup\Path\shell.bak'</code> <br />
+<code>WITH FILE = 1</code> <br />
+<code>,MOVE 'MyLiveDb'     TO 'C:\My\Data\Path\MyNewDevDb.mdf'</code> <br />
+<code>,MOVE 'MyLiveDb_log' TO 'C:\My\Data\Path\MyNewDevDb_log.ldf'</code> <br />
+<code>,STANDBY = 'C:\My\Backup\Path\ROLLBACK_UNDO_MyNewDevDb.BAK'</code> <br />
+<code>,NOUNLOAD , STATS = 10 ;</code></span>  </li>
+<li>Take the target DB offline (SQL)  <br />
+
+
+<code style="background-color: #444444;">ALTER DATABASE MyNewDevDb SET OFFLINE;</code>  </li>
+<li>Rename (or delete) the target data and log files (CMD)  <br />
+
+
+<span style="background-color: #444444;"><code>RENAME "C:\My\Data\Path\MyNewDevDb.mdf" "DeleteThis.mdf"</code> <br />
+<code>RENAME "C:\My\Data\Path\MyNewDevDb_log.ldf" "DeleteThis_log.ldf"</code></span>  </li>
+<li>Copy standby DB’s data and log files, using target’s filenames (CMD)  <br />
+
+
+<span style="background-color: #444444;"><code>COPY "C:\My\Data\Path\MyStandbyDb.mdf" "C:\My\Data\Path\MyNewDevDb.mdf"</code> <br />
+<code>COPY "C:\My\Data\Path\MyStandbyDb_log.ldf" "C:\My\Data\Path\MyNewDevDb_log.ldf"</code></span>  </li>
+<li>Take the target DB online (SQL)<br />
+
+
+<code style="background-color: #444444;">ALTER DATABASE MyNewDevDb SET ONLINE;</code>  </li>
+<li>Restore the target DB for normal usage (SQL) <br />
+
+
+<code style="background-color: #444444;">RESTORE DATABASE MyNewDevDb WITH RECOVERY;</code>  </li>
+<li>Take the standby DB back online (SQL)<br />
+
+
+<code style="background-color: #444444;">ALTER DATABASE MyStandbyDb SET ONLINE;</code>  </li>
+<li>Resume log shipping!</li>
+</ol>
+<h4 id="recovering_a_detached_standby_db">
+
+
+
+
+
+</h4>
+<h4 id="recovering_a_detached_standby_db">
+
+
+
+
+
+
+Recovering a detached standby DB</h4>
+If you need to attach a detached SQL Server standby DB you can do so use a slight variation on the steps above. Simply omit steps 1, 8 and 11 and treat the database you want to attach as the target in the other steps. Voila! :-)  <br />
+I hope this helps someone. Let me know if you find any issues with the steps.

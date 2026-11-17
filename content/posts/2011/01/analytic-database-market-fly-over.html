@@ -1,0 +1,53 @@
+---
+{
+  "id": "tag:blogger.com,1999:blog-7423363075024286359.post-1231940129792003003",
+  "title": "Analytic Database Market 'Fly Over'",
+  "published": "2011-01-19T08:37:00.000-08:00",
+  "updated": "2011-03-26T03:57:09.314-07:00",
+  "labels": [
+    "bi",
+    "columnar",
+    "Data Intensive Computing",
+    "database",
+    "dw",
+    "enterprise",
+    "gpu",
+    "no-sql",
+    "open-source",
+    "oracle",
+    "sql"
+  ],
+  "comments": [
+    {
+      "id": "216232057109754890",
+      "author": "Anonymous",
+      "authorUrl": "https://www.blogger.com/profile/16643442638117100818",
+      "published": "2011-03-25T14:46:22.490-07:00",
+      "html": "Just a bit of an update, Starting in the 2.0 Enterprise version of InfiniDB, it does support compression."
+    }
+  ]
+}
+---
+This is a follow up to my previous post where I laid out my <a href="/2010/12/initial-thoughts-about-parstream.html">initial thoughts about ParStream</a>. This is a very high level 'fly over' view of the analytic database market. I'll follow this up with some thoughts about how ParStream can position themselves in this market.<br />
+<div><b><br />
+</b><br />
+<b>Powerhouse Vendors</b></div><div>The power players in the Analytic Database market are: Oracle (particularly Exadata), IBM (mostly Netezza, also DB2), and Teradata. Each of these vendors employs a large, very well funded and sophisticated sales force. A new vendor competing against them in accounts will find it very, very hard to win deals. They can easily put more people to work on a bid than a company like ParStream *employs*. If you are tendering for business in a Global 5000 corporation then you should expect to encounter them and you need a strategy for countering their access to the executive boards of these companies (which you will not get). In terms of technology their offerings have become very similar in recent years with all 3&nbsp;emphasising&nbsp;MPP appliances of one kind or another, however most of the installed base are still using their traditional SMP offerings (Netezza and Teradata excepted).</div><div><b><br />
+</b><br />
+<b>New MPP niche players</b></div><div>There are a number of recent entrants to the market who also offer MPP technology, particularly: Greenplum, AsterData and ParAccel. All 3 offer software-only MPP databases, although Greenplum's emphasis has shifted slightly since being acquired by EMC. These vendors seem to focus mostly on (or succeed with) customers who have&nbsp;<b>very large</b>&nbsp;data volumes but are small companies in terms of employees. Many of these customers are in the web space. These vendors also have strong stories about supporting MapReduce/Hadoop inside their databases, which also plays to the leanings of web customers. According to testimonials on the vendor's websites customers seem to choose them because they are very fast and software only.</div><div><b><br />
+</b><br />
+<b>Microsoft</b></div><div>Microsoft is a unique case. They do not employ a direct sales force (as far as I know) however they have steadily become major force in enterprise software. Almost all companies run Windows desktops, have at least a few Windows servers and at least a few instances of SQL Server in production. Therefore&nbsp;Microsoft will be considered in virtually&nbsp;<b>every</b>&nbsp;selection process you're involved in. Microsoft have been steadily adding BI-DW features to the SQL Server product line and generally those features are all "free" with a SQL Server license. This doesn't necessarily make SQL Server cheaper but it does make it&nbsp;<b>feel&nbsp;</b>like very good value.&nbsp;Recent improvements include the Parallel Data Warehouse appliance (with HP hardware), columnar indexing for the next release and PowerPivot for local analysis of large data volumes.</div><div><b><br />
+</b><br />
+<b>Proprietary columnar</b></div><div>Columnar databases have been the hot technology in analytic databases for the last few years. The biggest vendors are Sybase with their very mature IQ product, SAND with an equally mature product and Vertica with their newer (and reportedly much faster) product. These databases can be used in single server (SMP / scale-up) and MPP (multi-server / scale-out) configurations. They appear to be most popular with customers who appreciate the high levels of compression that these databases offer and already have relatively mature star-schema / Kimball style data warehouses in place. &nbsp;In my experience Sybase and SAND are used most in companies where they were introduced by an OEM as part of another product. Vertica is so new that it's not clear who their 'natural' customers are yet.</div><div><b><br />
+</b><br />
+<b>Open Source columnar</b></div><div>In the open source world there are 2 MySQL storage engines and a standalone product offering&nbsp;columnar databases. The MySQL engine Infobright was the first open source columnar database. It features very high compression and very fast loading however it is not suited for lots of joins and may be better thought of as a OLAP tool managed via SQL. The InfiniDB MySQL engine on the other hand is very good at joins and very good at squeezing all the available performance out of a server, however it does not have any compression currently. Finally there is LucidDB which is a Java based standalone product and has performance characteristics somewhere between the other two. LucidDB features excellent compression, index support and generally good performance but can be slow to load.<br />
+<b><br />
+</b><br />
+<b>Vectorised columnar</b><br />
+There is only one player here: VectorWise. VectorWise is a columnar database (AFAIK) that has been architected from top to bottom to take advantage of the vector pipelines built into all recent CPUs. Vectorisation is a way of running many highly parallel operations through a single CPU. It basically removes all of the waiting and memory shifting that slows a CPU down. Initial testers have been very positive about the performance of VectorWise and had nothing but good things to say. There is also talk of an open source release so they are covering a lot of bases.&nbsp;They also have the advantage of being part of Ingres who may not be the force they once were but have a significant installed base and are well placed to sell VectorWise.&nbsp;They are the biggest direct competitor to ParStream that I can see right now.<br />
+<b><br />
+</b><br />
+<b>Open Source MapReduce/NoSQL</b><br />
+ParStream will also compete with a new breed of open source MapReduce/NoSQL products, most notably Hadoop (and it's variants). These products are not databases per se but they have gained a lot of mindshare among developers who need to work with large data volumes. Part of their attraction is their 'cloud friendliness'. They are perfect for the cloud because they have been designed to run on many small servers and to expect that a single server could fail at any time. There is a trade-off to be made and MapReduce products tend to be much more complex to query, however for a technically savvy audience the trade is well worth it.</div><div><i><br />
+</i><br />
+<i>Next time I'll talk about where I think ParStream need to place themselves to maximise their opportunity.</i></div><div><br />
+UPDATE: Actually, in the next post I talk about <a href="/2011/03/analytic-database-market-segmentation.html">how analytic database vendors are positioned and introduce a simple market segmentation</a>. A further post about market opportunities will follow.</div>

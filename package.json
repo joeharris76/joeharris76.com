@@ -1,0 +1,24 @@
+{
+  "name": "joeharris76.com",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "scripts": {
+    "import": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/import-blogger.ts",
+    "build": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/build.ts",
+    "check": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/check-urls.ts dist",
+    "check:live": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/check-urls.ts live",
+    "serve": "node --experimental-strip-types --disable-warning=ExperimentalWarning scripts/serve.ts",
+    "typecheck": "tsc -p .",
+    "lint:comments": "node scripts/check-comments.mjs",
+    "prepare": "lefthook install"
+  },
+  "devDependencies": {
+    "@types/node": "22.20.2",
+    "lefthook": "2.2.1",
+    "typescript": "6.0.3"
+  }
+}
