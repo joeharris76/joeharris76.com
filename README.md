@@ -123,6 +123,7 @@ DNS is at Porkbun. These are all the records on `joeharris76.com`:
 | `_atproto` | TXT | `did=did:plc:kid7jsmytijckqoisxpnf45h` | Bluesky handle |
 | `_dmarc` | TXT | `v=DMARC1; p=quarantine; adkim=r; aspf=r` | Mail that fails SPF and DKIM alignment goes to spam; no reports are requested |
 | `joeharris76.com` | CAA | `0 issue "letsencrypt.org"` | Only Let's Encrypt may issue certificates; it issues both the Pages certificate and Porkbun's forward certificates |
+| `_github-pages-challenge-joeharris76` | TXT | `f4a0624d4a70bf0ac512e091ea852f` | Verifies the domain for the `joeharris76` GitHub account; keep it, or the verification lapses |
 | `joeharris76.com` | NS | `curitiba`, `fortaleza`, `maceio` and `salvador` `.porkbun.com` | Porkbun DNS |
 
 Changes to the website never touch the email, DMARC or Bluesky records.
@@ -144,10 +145,11 @@ Settings → Pages: the source is GitHub Actions, the custom domain is
 its own. If HTTPS breaks after a domain change, remove the custom domain,
 wait a minute and add it back; that makes GitHub request a new certificate.
 
-Verifying the domain for your account (GitHub profile Settings → Pages → Add
-a domain) stops other GitHub accounts from publishing a Pages site on
-`joeharris76.com` or its subdomains. GitHub has no API for this on a user
-account, so it is a manual step.
+The domain is verified for the `joeharris76` account (GitHub profile Settings
+→ Pages), which stops other GitHub accounts from publishing a Pages site on
+`joeharris76.com` or its subdomains. Verification depends on the
+`_github-pages-challenge-joeharris76` TXT record. GitHub has no API for this
+on a user account, so re-verifying is a manual step.
 
 ### Repository protection
 
