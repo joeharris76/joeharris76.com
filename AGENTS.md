@@ -61,7 +61,7 @@ it before changing any of them, and keep it current when they change.
 - `SITE_DEPLOY_TARGET` stays `production`. The repository has one Pages
   site, so a rehearsal deploy replaces the live site with a `noindex` copy.
   Only the owner changes it.
-- DNS changes leave the email, Bluesky and Google records as they are.
+- DNS changes leave the email, DMARC, CAA and Bluesky records as they are.
 - After any DNS or forwarding change, run
   `npm run check:live -- --origin https://joeharris76.com --legacy --window 900`.
 - `joeharris76.blogspot.com` belongs to Google and answers "Blog not
