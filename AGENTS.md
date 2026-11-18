@@ -54,55 +54,20 @@ once from the Blogger blog that used to live at `blog.joeharris76.com`
   require a redirect to the same path on `<origin>`. `--window <seconds>`
   retries failures every ten seconds until the window closes.
 
-## Deploys
+## Deploys and hosting
 
-- `.github/workflows/deploy.yml` runs on a push to `main` and by hand. It
-  builds, runs `npm run check` and uploads the Pages artifact.
-- The repository variable `SITE_DEPLOY_TARGET` decides what happens next.
-  Unset, the run stops after the checks. `rehearsal` deploys with every page
-  marked `noindex` and a `robots.txt` that disallows everything.
-  `production` deploys the public site. Only the owner sets `production`.
-- `SITE_ORIGIN` is the origin the site is built for and probed at, for
-  example `https://new.joeharris76.com` for a rehearsal. Unset, the build
-  uses `https://joeharris76.com`.
-- After a deploy the run probes every inventory path on `SITE_ORIGIN` for up
-  to eleven minutes, which covers the ten-minute cache lifetime of Pages
-  responses.
+`README.md` describes the deploy workflow and its repository variables, the
+DNS records, the URL forwards, GitHub Pages, Blogger and the rollback. Read
+it before changing any of them, and keep it current when they change.
 
-## Hosting
-
-The site depends on this layout. DNS is at Porkbun.
-
-- The apex has the GitHub Pages A and AAAA records, and the Pages custom
-  domain is `joeharris76.com` with HTTPS enforced.
-- `www.joeharris76.com` and `blog.joeharris76.com` are Porkbun URL
-  forwards: permanent (301), to `https://joeharris76.com`, with the
-  requested path included. Porkbun serves them over HTTPS with its own
-  certificate. `www` is not a CNAME to GitHub, because GitHub issued the
-  Pages certificate for the apex only, so `https://www` failed there.
-- Blogger still serves `joeharris76.blogspot.com`. While Blogger lists
-  `blog.joeharris76.com` as the blog's custom domain, it answers blogspot
-  URLs with its own "You're about to be redirected" page (HTTP 404) that
-  links to the same path on `blog.joeharris76.com`. With the custom domain
-  removed (Blogger → Settings → Publishing) and this script placed right
-  after `<head>` in the Blogger theme, visitors go straight to the same
-  path here:
-
-  ```html
-  <script>//<![CDATA[
-  location.replace('https://joeharris76.com' + location.pathname + location.search + location.hash);
-  //]]></script>
-  ```
-
-  Neither answer is an HTTP redirect, so `check:live --legacy` does not
-  cover blogspot. Do not delete the Blogger blog.
-- Website changes never touch these records: MX, SPF, `apple-domain` and
-  `sig1._domainkey` (iCloud mail), `_atproto` (the Bluesky handle) and the
-  `7ybor4w6mef4` CNAME (Google's ownership check for the Blogger domain).
+- `SITE_DEPLOY_TARGET` stays `production`. The repository has one Pages
+  site, so a rehearsal deploy replaces the live site with a `noindex` copy.
+  Only the owner changes it.
+- DNS changes leave the email, Bluesky and Google records as they are.
 - After any DNS or forwarding change, run
   `npm run check:live -- --origin https://joeharris76.com --legacy --window 900`.
-  Porkbun's forwarder answers HTTP 429 to bursts of requests, and the
-  window retries them.
+- Keep the Blogger blog: it serves `joeharris76.blogspot.com` and is the
+  rollback target.
 
 ## Changes
 
