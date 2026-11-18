@@ -7,8 +7,9 @@ const isFile = (file: string): boolean => existsSync(file) && statSync(file).isF
 
 export function resolvePagesPath(root: string, urlPath: string): Resolution {
   const decoded = decodeURIComponent(urlPath);
-  const file = path.join(root, ...decoded.split("/"));
-  if (!file.startsWith(root)) return { status: 404 };
+  const base = path.resolve(root);
+  const file = path.resolve(base, ...decoded.split("/").filter(Boolean));
+  if (file !== base && !file.startsWith(base + path.sep)) return { status: 404 };
   if (decoded.endsWith("/")) return isFile(path.join(file, "index.html")) ? { status: 200, file: path.join(file, "index.html") } : { status: 404 };
   if (isFile(file)) return { status: 200, file };
   if (isFile(`${file}.html`)) return { status: 200, file: `${file}.html` };

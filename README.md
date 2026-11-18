@@ -121,10 +121,11 @@ DNS is at Porkbun. These are all the records on `joeharris76.com`:
 | `joeharris76.com` | TXT | `apple-domain=5bEcKhoyNNKvz2ua` | iCloud domain ownership |
 | `sig1._domainkey` | CNAME | `sig1.dkim.joeharris76.com.at.icloudmailadmin.com.` | iCloud email (DKIM) |
 | `_atproto` | TXT | `did=did:plc:kid7jsmytijckqoisxpnf45h` | Bluesky handle |
-| `7ybor4w6mef4` | CNAME | `gv-pdqdw73oqtckye.dv.googlehosted.com` | Google's ownership check for the Blogger domain |
+| `_dmarc` | TXT | `v=DMARC1; p=quarantine; adkim=r; aspf=r` | Mail that fails SPF and DKIM alignment goes to spam; no reports are requested |
+| `joeharris76.com` | CAA | `0 issue "letsencrypt.org"` | Only Let's Encrypt may issue certificates; it issues both the Pages certificate and Porkbun's forward certificates |
 | `joeharris76.com` | NS | `curitiba`, `fortaleza`, `maceio` and `salvador` `.porkbun.com` | Porkbun DNS |
 
-Changes to the website never touch the email, Bluesky or Google records.
+Changes to the website never touch the email, DMARC or Bluesky records.
 
 ### URL forwards
 
@@ -145,7 +146,15 @@ wait a minute and add it back; that makes GitHub request a new certificate.
 
 Verifying the domain for your account (GitHub profile Settings → Pages → Add
 a domain) stops other GitHub accounts from publishing a Pages site on
-`joeharris76.com` or its subdomains.
+`joeharris76.com` or its subdomains. GitHub has no API for this on a user
+account, so it is a manual step.
+
+### Repository protection
+
+A repository ruleset on `main` requires the `ci` check to pass, blocks force
+pushes and blocks deletion, with no bypass actors. Changes reach `main`
+through a pull request merged with squash. Dependabot vulnerability alerts
+are on.
 
 ### Blogger
 
@@ -203,9 +212,14 @@ blog from Blogger were:
 | `joeharris76.com` | A | `216.239.32.21`, `216.239.34.21`, `216.239.36.21`, `216.239.38.21` |
 | `www` | CNAME | `ghs.google.com` |
 | `blog` | CNAME | `ghs.google.com` |
+| `7ybor4w6mef4` | CNAME | `gv-pdqdw73oqtckye.dv.googlehosted.com` |
+
+The last record was Google's ownership check for the Blogger custom domain.
+It was removed because the blog is deleted.
 
 ## Porkbun API
 
 The Porkbun API can make the DNS and forwarding changes above. It needs "API
 Access" turned on for the domain and an API key from
-<https://porkbun.com/account/api>. Delete the key when the work is done.
+<https://porkbun.com/account/api>. Delete the key when the work is done. If the key is restricted to source
+IPs, call the API over IPv4 (`curl -4`).
