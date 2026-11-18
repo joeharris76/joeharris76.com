@@ -77,13 +77,29 @@ The site depends on this layout. DNS is at Porkbun.
   `joeharris76.github.io`; GitHub redirects `www` to the apex.
 - `blog.joeharris76.com` is a Porkbun URL forward: permanent (301), to
   `https://joeharris76.com`, with the requested path included.
-- `joeharris76.blogspot.com` still redirects to `blog.joeharris76.com` with
-  the path kept, because the Blogger blog keeps `blog.joeharris76.com` as
-  its custom domain. Do not delete the Blogger blog or remove that setting.
-- The MX, SPF, `apple-domain` and `sig1._domainkey` records serve iCloud
-  mail. Website changes never touch them.
+- Blogger still serves `joeharris76.blogspot.com`. While Blogger lists
+  `blog.joeharris76.com` as the blog's custom domain, it answers blogspot
+  URLs with its own "You're about to be redirected" page (HTTP 404) that
+  links to the same path on `blog.joeharris76.com`. With the custom domain
+  removed (Blogger → Settings → Publishing) and this script placed right
+  after `<head>` in the Blogger theme, visitors go straight to the same
+  path here:
+
+  ```html
+  <script>//<![CDATA[
+  location.replace('https://joeharris76.com' + location.pathname + location.search + location.hash);
+  //]]></script>
+  ```
+
+  Neither answer is an HTTP redirect, so `check:live --legacy` does not
+  cover blogspot. Do not delete the Blogger blog.
+- Website changes never touch these records: MX, SPF, `apple-domain` and
+  `sig1._domainkey` (iCloud mail), `_atproto` (the Bluesky handle) and the
+  `7ybor4w6mef4` CNAME (Google's ownership check for the Blogger domain).
 - After any DNS or forwarding change, run
-  `npm run check:live -- --origin https://joeharris76.com --legacy`.
+  `npm run check:live -- --origin https://joeharris76.com --legacy --window 900`.
+  Porkbun's forwarder answers HTTP 429 to bursts of requests, and the
+  window retries them.
 
 ## Changes
 

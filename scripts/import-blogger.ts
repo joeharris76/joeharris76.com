@@ -24,8 +24,6 @@ const SITE_AUTHOR = "Joe Harris";
 const LEGACY_ORIGINS = [
   "http://blog.joeharris76.com",
   "https://blog.joeharris76.com",
-  "http://joeharris76.blogspot.com",
-  "https://joeharris76.blogspot.com",
   "http://www.joeharris76.com",
   "https://www.joeharris76.com",
   "http://joeharris76.com",
