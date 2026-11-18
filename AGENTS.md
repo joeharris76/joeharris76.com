@@ -73,10 +73,13 @@ once from the Blogger blog that used to live at `blog.joeharris76.com`
 
 The site depends on this layout. DNS is at Porkbun.
 
-- The apex has the GitHub Pages A and AAAA records and `www` is a CNAME to
-  `joeharris76.github.io`; GitHub redirects `www` to the apex.
-- `blog.joeharris76.com` is a Porkbun URL forward: permanent (301), to
-  `https://joeharris76.com`, with the requested path included.
+- The apex has the GitHub Pages A and AAAA records, and the Pages custom
+  domain is `joeharris76.com` with HTTPS enforced.
+- `www.joeharris76.com` and `blog.joeharris76.com` are Porkbun URL
+  forwards: permanent (301), to `https://joeharris76.com`, with the
+  requested path included. Porkbun serves them over HTTPS with its own
+  certificate. `www` is not a CNAME to GitHub, because GitHub issued the
+  Pages certificate for the apex only, so `https://www` failed there.
 - Blogger still serves `joeharris76.blogspot.com`. While Blogger lists
   `blog.joeharris76.com` as the blog's custom domain, it answers blogspot
   URLs with its own "You're about to be redirected" page (HTTP 404) that
