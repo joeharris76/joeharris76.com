@@ -70,6 +70,12 @@ post body as HTML:
   post.
 - `published` sets the month archive the post is listed in, so keep it in
   the same year and month as the file's folder.
+- `labels` are the post's tags: 3 to 6 key terms. Reuse an existing tag
+  (listed at `/search/label/`) before adding a new one, and never add one that
+  differs from an existing tag only in case, because macOS treats the two
+  label pages as one file. Never remove a label from an imported post: each
+  label page is an old Blogger URL.
+- The left navigation lists every post by year and the 24 most-used tags.
 - Put images in `public/images/` and link them as `/images/<file>`.
 - The site takes no new comments. The `comments` of imported posts are an
   archive of the Blogger comments.
