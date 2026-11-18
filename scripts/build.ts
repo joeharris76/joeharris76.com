@@ -47,6 +47,7 @@ function page(title: string, canonicalPath: string, body: string): string {
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#091833">
 ${REHEARSAL ? '<meta name="robots" content="noindex, nofollow">\n' : ""}<title>${escape(title)}</title>
 <link rel="canonical" href="${escape(ORIGIN + canonicalPath)}">
 <link rel="alternate" type="application/atom+xml" title="${escape(site.title)}" href="${ORIGIN}/feeds/posts/default">
