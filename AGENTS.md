@@ -28,10 +28,8 @@ once from the Blogger blog that used to live at `blog.joeharris76.com`
 - Imported comments are an archive; the site takes no new comments.
   `inventory/excluded-comments.json` lists the Blogger comments left out
   and why.
-- `npm run import` reimports everything from Blogger's public feeds and
-  overwrites `content/posts/`, `public/images/`, `public/favicon.ico`,
-  `content/site.json` and `inventory/legacy-urls.json`. Run it only while
-  Blogger still serves the blog and nothing has been edited here since.
+- The Blogger blog has been deleted, so the content here is the only copy.
+  Edit posts in place; there is no reimport.
 
 ## Legacy URLs
 
@@ -66,8 +64,8 @@ it before changing any of them, and keep it current when they change.
 - DNS changes leave the email, Bluesky and Google records as they are.
 - After any DNS or forwarding change, run
   `npm run check:live -- --origin https://joeharris76.com --legacy --window 900`.
-- Keep the Blogger blog: it serves `joeharris76.blogspot.com` and is the
-  rollback target.
+- `joeharris76.blogspot.com` belongs to Google and answers "Blog not
+  found" now that the Blogger blog is deleted. Nothing here can redirect it.
 
 ## Changes
 

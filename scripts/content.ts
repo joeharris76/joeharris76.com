@@ -16,21 +16,11 @@ export type LegacyInventory = { legacyOrigins: string[]; paths: string[] };
 
 const FENCE = "---\n";
 
-export function serializePost(meta: PostMeta, html: string): string {
-  return `${FENCE}${JSON.stringify(meta, null, 2)}\n${FENCE}${html.trim()}\n`;
-}
-
 export function parsePost(source: string, urlPath: string): Post {
   const end = source.indexOf(`\n${FENCE}`, FENCE.length);
   if (!source.startsWith(FENCE) || end < 0) throw new Error(`${urlPath}: missing front matter`);
   const meta = JSON.parse(source.slice(FENCE.length, end)) as PostMeta;
   return { ...meta, path: urlPath, html: source.slice(end + FENCE.length + 1) };
-}
-
-export function postNumber(atomId: string): string {
-  const number = /\.post-(\d+)$/.exec(atomId)?.[1];
-  if (number === undefined) throw new Error(`not a Blogger post or comment id: ${atomId}`);
-  return number;
 }
 
 export function readSite(): Site {

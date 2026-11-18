@@ -14,7 +14,6 @@ flowchart LR
   blog["blog.joeharris76.com/…<br>http and https"] -->|"301, Porkbun forward"| site
   www["www.joeharris76.com/…<br>http and https"] -->|"301, Porkbun forward"| site
   apex["http://joeharris76.com/…"] -->|"301, GitHub Pages"| site
-  blogspot["joeharris76.blogspot.com/…"] -->|"script in the Blogger theme"| site
   site["https://joeharris76.com/…<br>GitHub Pages"]
 ```
 
@@ -25,7 +24,7 @@ Every old address lands on the same path at `https://joeharris76.com`.
 | Source, build and deploys | GitHub: `joeharris76/joeharris76.com` | A push to `main` deploys the site |
 | Web hosting | GitHub Pages | Custom domain `joeharris76.com`, HTTPS enforced |
 | Domain and DNS | Porkbun | Auto-renew and WHOIS privacy are on |
-| Old blog | Blogger, blog id `7423363075024286359` | Still serves `joeharris76.blogspot.com` |
+| Old blog | Blogger, blog id `7423363075024286359` | Deleted; `joeharris76.blogspot.com` answers "Blog not found" |
 | Email | iCloud custom email domain | Uses the MX, SPF and DKIM records |
 | Bluesky handle | The `_atproto` TXT record | |
 
@@ -150,27 +149,15 @@ a domain) stops other GitHub accounts from publishing a Pages site on
 
 ### Blogger
 
-Keep the Blogger blog. It still serves `joeharris76.blogspot.com`, and it is
-the way back if the move ever has to be undone.
+The Blogger blog has been deleted, so this repository holds the only copy of
+the posts and comments.
 
-While Blogger lists `blog.joeharris76.com` as the blog's custom domain, it
-answers blogspot URLs with its own "You're about to be redirected" page. That
-page returns HTTP 404 and links to the same path on `blog.joeharris76.com`.
-To send blogspot visitors straight to the same post here:
-
-1. In Blogger, open Theme → the arrow next to Customize → Edit HTML, paste
-   this right after `<head>` and save:
-
-   ```html
-   <script>//<![CDATA[
-   location.replace('https://joeharris76.com' + location.pathname + location.search + location.hash);
-   //]]></script>
-   ```
-
-2. In Settings → Publishing → Custom domain, remove `blog.joeharris76.com`.
-
-Neither Blogger response is an HTTP redirect, so the automated checks do not
-cover blogspot addresses.
+Old links to `joeharris76.blogspot.com/…` now get Blogger's "Blog not found"
+page (HTTP 404). The `blogspot.com` domain belongs to Google, so only Blogger
+could redirect those addresses, and it stops serving them once the blog is
+deleted. Blogger keeps a deleted blog for a short time, during which it can
+be restored from the Blogger dashboard; a restored blog could then redirect
+with a script in its theme.
 
 ## Old URLs
 
@@ -204,27 +191,18 @@ that each one redirects to the same path here. Run it after any DNS or
 forwarding change. Porkbun's forwarder answers HTTP 429 to bursts of
 requests; `--window 900` keeps retrying the failures for 15 minutes.
 
-## Rolling back to Blogger
+## Rolling back
 
-These records served the blog from Blogger before the move:
+The Blogger blog is deleted, so there is no Blogger copy to go back to. To
+serve the site from another host, point the apex records and the `www` and
+`blog` forwards at it and rerun the live checks. The records that served the
+blog from Blogger were:
 
 | Name | Type | Value |
 |---|---|---|
 | `joeharris76.com` | A | `216.239.32.21`, `216.239.34.21`, `216.239.36.21`, `216.239.38.21` |
 | `www` | CNAME | `ghs.google.com` |
 | `blog` | CNAME | `ghs.google.com` |
-
-To go back:
-
-1. In Porkbun, delete the `www` and `blog` URL forwards and the GitHub
-   Pages A and AAAA records, then add the records above.
-2. In Blogger, remove the redirect script from the theme and set the custom
-   domain back to `blog.joeharris76.com` (Settings → Publishing).
-3. In GitHub, unset `SITE_DEPLOY_TARGET` and remove the Pages custom domain.
-
-This brings back the setup that failed in the first place: Blogger served
-no HTTPS certificate for `joeharris76.com`, `www` or `blog`, so browsers
-that require HTTPS warned before loading the blog.
 
 ## Porkbun API
 
