@@ -208,7 +208,7 @@ I then tried two fixes for the coding skill, on the same prompts. The first rewr
 | Opus | 0/32 | 3/32 | 27/32 |
 | Fable | 7/16 | 7/16 | 15/16 |
 
-The rewrite did little. The rule worked where it could fire. On Sonnet, 24 sessions used the edit or write tool on a source file and all 24 read the skill. Five more changed source files only through the shell, with `sed -i` or a redirect, where the rule cannot fire. Four of those never read the skill, and one read it unprompted. No near-miss session loaded the skill in any arm. These follow-up results are not yet in a public report.
+The rewrite did little. The rule worked whenever it fired: it fired in 59 sessions across the three models, and the agent read the skill in all 59. It cannot fire when the agent changes source only through the shell. At least four Sonnet sessions did that, with `sed -i` or a redirect, and none of them read the skill. No near-miss session loaded the skill in any arm. The [follow-up report](https://github.com/joeharris76/skill-sync-skills/blob/main/evals/ablation/results/2026-11-18-code-skill-loading.md) has the table by prompt type.
 
 ## The recipe
 
@@ -262,4 +262,5 @@ Run the loading probe. It costs about a dollar, and it showed that my subagents 
 - [Which instruction sources reach the model](https://github.com/joeharris76/skill-sync-skills/blob/main/evals/ablation/results/loading-map.md)
 - [Phase 2 results, 2026-11-17](https://github.com/joeharris76/skill-sync-skills/blob/main/evals/ablation/results/2026-11-17-phase-2.md)
 - [Phase 3 results, 2026-11-18](https://github.com/joeharris76/skill-sync-skills/blob/main/evals/ablation/results/2026-11-18-phase-3.md)
+- [Loading the `code` skill, 2026-11-18](https://github.com/joeharris76/skill-sync-skills/blob/main/evals/ablation/results/2026-11-18-code-skill-loading.md)
 - Zhang et al., [Guardrails Beat Guidance: A Large-Scale Study of Rules, Skills, and Persistent Configuration for Coding Agents](https://arxiv.org/abs/2604.11088), arXiv 2604.11088, 2026.

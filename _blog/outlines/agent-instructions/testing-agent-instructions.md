@@ -47,12 +47,11 @@ Public, in `joeharris76/skill-sync-skills` under `evals/ablation/`:
 | P3 | `results/2026-11-18-phase-3.md` |
 | README | `README.md` |
 | PREREG | `prereg/subagent-briefs.md`, `prereg/phase3-amendments.md` |
+| TRIGGER | `results/2026-11-18-code-skill-loading.md` |
 
 Unpublished, from the author's own notes and session logs: the line-reading
-study (STUDY), the phase 2 plan (PLAN2), the sample of subagent briefs
-(BRIEFS), the per-run phase 2 reports (RUNS), and the follow-up test of skill
-loading (TRIGGER). A figure from these carries its tag below so it can be
-rechecked.
+study (STUDY), the phase 2 plan (PLAN2) and the sample of subagent briefs
+(BRIEFS). A figure from these carries its tag below so it can be rechecked.
 
 ## Sections
 
@@ -150,9 +149,9 @@ one omp rule, no deletions.
 - The force-push rule was scored on Opus and Fable, so its effect on Sonnet
   is inference.
 - Follow-up table for all three models and three arms (TRIGGER). The omp
-  rule fires on the edit and write tools only: 24 of 24 Sonnet sessions that
-  used them read the skill. Five changed source only through the shell; four
-  of those never read it and one read it unprompted.
+  rule fired in 59 sessions and the agent read the skill in all 59. It cannot
+  fire on shell edits: at least four Sonnet sessions changed source that way
+  and none read the skill.
 
 ### 8. The recipe
 
@@ -179,13 +178,6 @@ The loading probe, then one rule with a no-instructions arm.
 
 ## Open questions for the author
 
-1. The follow-up loading results (section 7) are not in a public report. The
-   draft says so. Publish the table in `skill-sync-skills` before the post
-   goes out?
-2. Two public reports need a note before the post links to them. The pilot
-   report says omp's commit helper skips config-defined hooks, and a later
-   test showed it runs them. The phase 2 report presents the brief-sentence
-   result without the three cautions in section 5.
-3. Labels for the post. The site has no label for agent tooling yet.
-4. The loading probe ran on omp 18.22. omp is now at version 19. Rerun the
+1. Labels for the post. The site has no label for agent tooling yet.
+2. The loading probe ran on omp 18.22. omp is now at version 19. Rerun the
    probe before publishing?
