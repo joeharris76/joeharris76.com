@@ -1,4 +1,4 @@
-# Outline: How to test whether your AGENTS.md does anything
+# Outline: Testing agent instructions: most tests could not fail
 
 Draft: `_blog/drafts/agent-instructions/testing-agent-instructions.md`.
 
@@ -16,12 +16,24 @@ Two checks decide whether the measurement means anything, and both come
 before the measurement itself: does the text reach the agent, and can the
 test fail without it?
 
-**Type.** Methodology guide with results. Target 3,000 to 3,300 words plus
-tables.
+**Type.** Results with method. The results come from one person's files and
+will not transfer; the two checks will. The post leads with the checks and
+uses the results as illustration.
 
-**Title.** "How to test whether your AGENTS.md does anything" (48
-characters). Alternative: "Testing agent instructions: most of my tests
-could not fail".
+**Length.** 3,000 to 3,300 words plus tables.
+
+**Title.** "Testing agent instructions: most tests could not fail" (53
+characters). It names the finding. A "how to test your AGENTS.md" title would
+promise a tool that takes the reader's own file, and the test rig does not do
+that yet.
+
+## Terms
+
+- "Harness" means omp or Claude Code only. The evaluation runner is "the test
+  rig".
+- Define on first use: instruction file, skill, harness, subagent, brief,
+  arm, pre-registration, band (keep, within, inconclusive), judged check,
+  Holm correction.
 
 ## Sources
 
@@ -34,161 +46,146 @@ Public, in `joeharris76/skill-sync-skills` under `evals/ablation/`:
 | P2 | `results/2026-11-17-phase-2.md` |
 | P3 | `results/2026-11-18-phase-3.md` |
 | README | `README.md` |
-| AMEND | `prereg/phase3-amendments.md` |
+| PREREG | `prereg/subagent-briefs.md`, `prereg/phase3-amendments.md` |
 
 Unpublished, from the author's own notes and session logs: the line-reading
 study (STUDY), the phase 2 plan (PLAN2), the sample of subagent briefs
-(BRIEFS), and the follow-up test of skill loading (TRIGGER). A figure from
-these carries its tag below so it can be rechecked.
+(BRIEFS), the per-run phase 2 reports (RUNS), and the follow-up test of skill
+loading (TRIGGER). A figure from these carries its tag below so it can be
+rechecked.
 
 ## Sections
 
-### TL;DR (90 words)
+### TL;DR
 
-What was run, the two checks, and the outcome: one sentence added, two rules
-reworded, nothing deleted.
+What was run and when, the two checks, and the full list of outcomes: one
+sentence, two reworded rules, three reworded descriptions, two commit hooks,
+one omp rule, no deletions.
 
-### 1. Reading a rule does not show whether it works (200 words)
+### 1. Reading a rule does not show whether it works
 
-- The reading study judged 6,201 lines and rated 65% of instruction lines
-  "keep" (STUDY). It could not say whether any rule changed behavior.
-- One example of a reading verdict the experiment reversed: the writing
-  standard looked unnecessary on Sonnet (5/5 with and without) and Opus
-  needed it (5/5 with, 0/5 without) (PILOT, "The models behave differently").
+- The reading study rated 65% of instruction lines "keep" (STUDY). It judged
+  text and could not judge behavior.
+- No example here. The model-by-model contrast belongs to section 4.
 
-### 2. Check one: does the text reach the agent? (350 words)
+### 2. Check one: does the text reach the agent?
 
 - Method: a unique marker per source, each role asked to quote what it holds,
   a control file nothing loads. Control quoted in 0 of 45 answers (MAP,
   "Method").
-- Table: source by role for omp and Claude Code, reduced to four sources.
-- omp: the discovered global file reached the main session 3/3 and both
-  subagent roles 0/3; repository `AGENTS.md` reached subagents 0/3 in every
-  configuration (MAP, "Direct answers").
-- Claude Code never loaded `AGENTS.md`; a `CLAUDE.md` holding `@AGENTS.md`
-  loaded it 3/3, a prose pointer 0/3 (P2, "Where instructions load").
-- Skill bodies reach no role until the skill loads (MAP, recommendation 7).
-- Scale: subagent sessions held 756,000 messages against 734,000 in main
-  sessions (PLAN2).
-- Cost: 0.93 USD for 15 sessions (MAP, "Cost").
+- Table with the condition for each row stated in the row label, and a note
+  that rows come from more than one omp configuration (MAP, "Result").
+- Four results, each with its condition (MAP, "Result", "Direct answers";
+  P2, "Where instructions load"):
+  - omp: a discovered global file stops at the main session;
+    `contextFiles.extra` delivers it to subagents 3/3.
+  - omp subagents never receive the repository `AGENTS.md`.
+  - omp loads one project file; `.claude/CLAUDE.md` shadows `AGENTS.md`.
+  - Claude Code loads `AGENTS.md` only through an `@AGENTS.md` import (3/3
+    against 0/3 for a prose pointer).
+- The message counts (756,000 against 734,000) cover every harness, so they
+  size delegation in general and say nothing about omp alone (PLAN2).
+- Limits beside the table: 3 sessions per cell, almost all on one model, dated
+  versions.
 
-### 3. The harness (250 words)
+### 3. The test rig
 
-- One headless session per scenario, arm and repeat, in a throwaway
-  repository with a local bare remote and a stub GitHub CLI (README, "How a
-  session runs").
-- Arms remove one section, keep one section, or supply no file (README,
-  "Arms"). Checks are shell commands.
-- The sandbox hides other copies of the files under test. One agent searched
-  the disk and read a real copy before that was added (PILOT limits; the
-  README's filesystem profile).
-- Guards: pinned baseline, pre-registration, spend ledger, model check
-  (README, "Guards").
+- One headless session per scenario, arm and repeat; checks are shell
+  commands (README, "How a session runs").
+- Four guards in one paragraph (README, "Guards").
+- Two limits: macOS only with a fixed list of hidden folders; sessions read
+  the user's own omp settings (P3, "Limits").
 
-### 4. Five repeats: large effects and broken graders (350 words)
+### 4. Five repeats: large effects and broken graders
 
-- 1,390 sessions on three Claude models, 141.82 USD (PILOT, opening).
-- Table of three contrasts by model: review-only, commit labels, close-out
-  (PILOT, "The models behave differently").
-- Wording: "Reviews produce findings only" 0/5; naming the tempting situation
-  15/15 (PILOT, "Rewordings tested and adopted").
-- A hook beat text for a mechanical rule: the written identity rule held in
-  5/15 Sonnet sessions; a pre-commit hook blocked 5/5 (PILOT, "Global file,
-  section by section", "Commit-identity hook").
-- Four grader and sandbox faults found only by reading transcripts, one of
-  which had produced a false p = 0.008.
-- What five repeats can show: 5/5 against 0/5 is p = 0.008; 5/5 against 1/5
-  is p = 0.048 (README, "Reading the results"). One p = 0.049 finding
-  weakened to noise on rerun (PILOT, "Follow-up experiments").
+- 1,390 sessions, 141.82 USD, plus 370 follow-up sessions with no recorded
+  cost (PILOT, opening, "Follow-up experiments").
+- Table of three contrasts by model (PILOT, "The models behave differently").
+- Wording: 0/5 against 15/15 (PILOT, "Rewordings tested and adopted").
+- The identity rule and the hook as two separate results: 5/15 as first
+  worded; a hook with no instruction file blocked 5/5 (PILOT, "Global file,
+  section by section", "Commit-identity hook"). Two hooks were installed.
+- One grader fault as the example, of four.
+- What five repeats can show (README, "Reading the results").
 
-### 5. Thirty repeats: most tests could not fail (500 words)
+### 5. Thirty repeats: most tests could not fail
 
-- Rules fixed before the runs: pre-registration, decision bands in code, a
-  spend ceiling (README, "Guards", "Decisions").
-- 3,173 sessions, 623 USD (P2, run table and total).
-- The central table: rule, with/without on Sonnet in omp, the no-file column,
-  decision (P2, "Rules in the global file").
-- Two rules showed large effects. Seven showed no difference, and in each the
-  arm with no file passed too. The pre-registered delete rule was not
-  applied; state the deviation once, here (P2, "Decision rule and one
-  deviation").
-- Skill sections: 11 removed in turn over 600 sessions, 28 to 30 of 30 in
-  every arm (P2, "Skill sections").
-- The one adopted sentence, quoted, with its three-row result (P2, "New rules
-  tried"). Supporting observation: the identity rule was missing from 39% of
-  100 sampled briefs (BRIEFS).
-- Claims without checks: 60 of 60 wrong status reports; 25 of 30 false
-  completion claims with the candidate sentence; the 5/30 against 0/30 result
-  (p = 0.052) shown as inconclusive and not acted on (P2, "New rules tried",
-  "Failures no tested text fixed"). These were also the largest class of real
-  corrections, 21% of 298 (PLAN2).
+- Pre-registration and bands defined (README, "Guards", "Decisions").
+- 3,173 sessions; 623 USD from the ledger; about 5 USD to test one rule in
+  two arms on Sonnet (P2, run table).
+- The central table with a single "with and without" column and the no-file
+  column (P2, "Rules in the global file").
+- The deviation from the pre-registered delete rule, stated once (P2,
+  "Decision rule and one deviation").
+- The adopted sentence (P2, "New rules tried"), with three cautions:
+  - the "keep" came from the brief check; the scored commit check did not
+    reach the bar on any row (RUNS; PREREG);
+  - Opus could not show an effect;
+  - the rig supplies the global file by the route that reaches subagents
+    (MAP, third column), so the test does not reproduce the loading gap.
+- Why an addition was adopted on one model while deletions need two.
+- Real briefs: 20 of 56 implementer briefs left the identity rule out, 7
+  more in part (BRIEFS).
+- Claims without checks: 60 of 60; 5/30 against 0/30 (p = 0.052) shown as
+  inconclusive and not acted on (P2). Largest class of real corrections, 21%
+  of 298 (PLAN2).
 
-### 6. Check two: build tests that can fail (550 words)
+### 6. Check two: build tests that can fail
 
-- Three arms per family: full, whole skill removed, candidate sections
-  removed. The second arm is the sensitivity control (P3, opening).
-- Difficulty set in a pilot with the skill removed, choosing the level
-  nearest a 50% pass rate; those sessions are discarded (AMEND, "Dial levels").
-  They were 2,814 of the phase's sessions and 205 USD (P3, run table).
-- 36 sessions per arm, a 20-point margin, one Holm correction over 244 tests
-  (P3, "Decision rule").
-- Result: 17 "keep" comparisons in nine families. Table of five rows (P3,
-  "Sections that matter").
-- Families where removing the skill changed nothing stay unjudged (P3,
-  "Families where removing the skill changed nothing").
-- The full skill is not always followed: 0.39 on one check (P3, "The full
-  skill is not always followed").
-- No deletions: the sample cannot show equivalence, and the model that loads
-  these skills most in real use was unavailable (P3, "What changed",
-  "Decision rule", "Not run").
-- Cost: 1,007 USD (P3, run table).
+- Three arms; `minus-skill` is the sensitivity control (P3, opening).
+- Temptation levels, the Sonnet tuning pilot, and its coarseness: scored
+  `minus-skill` arms often passed under 10%, far from the 50% target (PREREG,
+  "Dial levels"; P3 table).
+- Answer the circularity objection before the table.
+- Sample: 36 per arm, cut from 70; some arms 19 to 30 (PREREG, "Sample"; P3,
+  opening).
+- Table: one row from each of five families, including one where
+  `minus-skill` stayed at 0.56 (P3, "Sections that matter").
+- Insensitive families; the full skill not always followed; no filler-text
+  arm; no deletions (P3).
 
-### 7. Text that matters still has to load (300 words)
+### 7. Text that matters still has to load
 
-- Trigger evaluation: 180 prompts, 540 Sonnet sessions. Table of four skills
-  (P3, "Trigger evaluation").
-- The skill that holds the force-push and identity rules, both "keep",
-  loaded in 1 of 18 explicit prompts.
-- Follow-up (TRIGGER): a rewritten description changed nothing on Sonnet
-  (0/18 before and after); a harness rule that fires at the first source edit
-  made every Sonnet session that edited a source file read the skill (24 of
-  24).
+- Trigger evaluation table for four skills (P3, "Trigger evaluation").
+- The force-push rule was scored on Opus and Fable, so its effect on Sonnet
+  is inference.
+- Follow-up table for all three models and three arms (TRIGGER). The omp
+  rule fires on the edit and write tools only: 24 of 24 Sonnet sessions that
+  used them read the skill. Five changed source only through the shell; four
+  of those never read it and one read it unprompted.
 
-### 8. The recipe (300 words)
+### 8. The recipe
 
-Eight steps: map loading; sandbox reads and writes; always run a
-no-instructions arm; tune difficulty until that arm fails about half the
-time; fix decision bands and a spend ceiling first; shell checks before
-judged checks; replicate across models before deleting; read transcripts.
+Eight steps. Lead the commands with the loading probe, which runs unchanged.
+State that the rig runs the author's scenarios and fixtures.
 
-### 9. Limits (150 words)
+### 9. Limits
 
-One person's configuration; small repositories built for the test; one
-scenario family per rule; one provider's models for every decision; dated
-harness versions; macOS only.
+One person's configuration; the most-used models were not the ones tested;
+built-for-test repositories; temptation levels set on one model; a thin
+loading probe; dated versions; same-family labels; private sources.
 
-### Reproduce and references
+### 10. Where to start
 
-Commands from P2 and P3 "Reproduce". Links to the four reports, the README
-and the one external paper.
+The loading probe, then one rule with a no-instructions arm.
 
 ## Left out
 
-- Skill names and section names beyond the examples in the tables.
-- Replays of real sessions, beyond one sentence.
-- Judge calibration, beyond the recipe step.
+- Replays of real sessions.
+- Judge calibration, beyond one sentence.
 - The GPT pilot tables and the outcomes study.
-- How the work was organised and what went wrong in organising it.
+- A combined total for sessions or cost.
+- How the work was organised.
 
 ## Open questions for the author
 
-1. The follow-up loading test (section 7, last bullet) is not in a public
-   report. Publish its table in `skill-sync-skills` first, or cut the
-   paragraph?
-2. The pilot report says omp's commit helper skips config-defined hooks. A
-   later test showed that it runs them. The draft cites only the hook result
-   for `git commit`. Should the pilot report get a correction note before the
-   post links to it?
+1. The follow-up loading results (section 7) are not in a public report. The
+   draft says so. Publish the table in `skill-sync-skills` before the post
+   goes out?
+2. Two public reports need a note before the post links to them. The pilot
+   report says omp's commit helper skips config-defined hooks, and a later
+   test showed it runs them. The phase 2 report presents the brief-sentence
+   result without the three cautions in section 5.
 3. Labels for the post. The site has no label for agent tooling yet.
-4. Is a chart of pass rates with no instructions wanted, or do the tables
-   carry it?
+4. The loading probe ran on omp 18.22. omp is now at version 19. Rerun the
+   probe before publishing?
