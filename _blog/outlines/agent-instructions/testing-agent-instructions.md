@@ -118,7 +118,7 @@ one omp rule, no deletions.
   "Decision rule and one deviation").
 - The adopted sentence (P2, "New rules tried"), with three cautions:
   - the "keep" came from the brief check; the scored commit check did not
-    reach the bar on any row (RUNS; PREREG);
+    reach the bar on any row (P2, "New rules tried"; PREREG);
   - Opus could not show an effect;
   - the rig supplies the global file by the route that reaches subagents
     (MAP, third column), so the test does not reproduce the loading gap.
